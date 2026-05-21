@@ -69,7 +69,17 @@ function HeroSection() {
       <div className="relative z-10 mx-auto grid w-full max-w-[92rem] flex-1 gap-10 px-4 pt-14 sm:px-6 lg:min-h-screen lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:px-8 lg:pt-8 xl:gap-12">
         <div className="lg:pl-8 xl:pl-14">
           <h1 className="mt-6 [font-family:var(--font-challenge-ph-heading)] text-[clamp(2.45rem,4.6vw,4.35rem)] font-bold leading-[0.96] tracking-[-0.04em] whitespace-nowrap">
-            <span className="block text-white">Solve 🇵🇭 challenges</span>
+            <span className="block text-white">
+              Solve{" "}
+              <Image
+                src="/super-listings/flag_ph.svg"
+                alt="Philippines"
+                width={58}
+                height={38}
+                className="mx-1 inline-block h-[0.72em] w-auto align-[-0.06em]"
+              />{" "}
+              challenges
+            </span>
 
             <span className="block text-[#BFE7FF] ">Win rewards.</span>
             <span className="block text-[#FFC83D]">Make a difference.</span>
