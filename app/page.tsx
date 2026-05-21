@@ -1,13 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { JetBrains_Mono, Open_Sans, Space_Grotesk } from "next/font/google";
-import {
-  ArrowRight,
-  Building2,
-  CalendarDays,
-  ChevronRight,
-  MapPin,
-} from "lucide-react";
+import { ArrowRight, Building2, CalendarDays, MapPin } from "lucide-react";
 
 import { challengePhChallenges } from "@/lib/challenges/data";
 import {
@@ -65,7 +59,7 @@ function HeroSection() {
         />
       </div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(140,200,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(140,200,255,0.08)_1px,transparent_1px)] bg-[size:40px_40px] opacity-55 [mask-image:radial-gradient(circle_at_70%_35%,#000_0%,transparent_78%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_28%,rgba(13,107,255,0.24),transparent_30rem),radial-gradient(circle_at_76%_44%,rgba(45,125,255,0.18),transparent_34rem)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_28%,rgba(13,107,255,0.24),transparent_30rem)]" />
       <div className="pointer-events-none absolute left-[14%] top-[28%] h-1.5 w-1.5 animate-pulse rounded-full bg-[#66c2ff]/80 shadow-[0_0_12px_rgba(102,194,255,0.65)] [animation-duration:2.8s]" />
       <div className="pointer-events-none absolute right-[20%] top-[22%] h-2 w-2 animate-pulse rounded-full bg-[#2388ff]/75 shadow-[0_0_14px_rgba(35,136,255,0.62)] [animation-delay:0.7s] [animation-duration:3.2s]" />
       <div className="pointer-events-none absolute bottom-[28%] left-[31%] h-1.5 w-1.5 animate-pulse rounded-full bg-white/65 shadow-[0_0_10px_rgba(255,255,255,0.5)] [animation-delay:1.2s] [animation-duration:3.6s]" />
@@ -111,81 +105,12 @@ function HeroSection() {
         </div>
         <div
           id="problem-map"
-          className="relative mx-auto hidden w-full max-w-[70rem] -translate-y-6 scale-125 scroll-mt-[28vh] transition-transform duration-500 ease-out lg:block xl:scale-[1.42]"
+          className="relative mx-auto hidden w-full max-w-[70rem] -translate-y-6 scale-125 lg:block xl:scale-[1.42]"
         >
           <ChallengePhInteractiveMap />
         </div>
       </div>
-      <style>
-        {`
-          html {
-            scroll-behavior: smooth;
-          }
-
-          #problem-map:target {
-            z-index: 30;
-            transform: translate(0, -2.5rem) scale(1.18);
-          }
-
-          @media (min-width: 1280px) {
-            #problem-map:target {
-              transform: translate(0, -3rem) scale(1.25);
-            }
-          }
-        `}
-      </style>
     </section>
-  );
-}
-
-function PipelineStep({
-  number,
-  title,
-  body,
-  accent,
-}: {
-  number: string;
-  title: string;
-  body: string;
-  accent: "blue" | "gold";
-}) {
-  const isGold = accent === "gold";
-
-  return (
-    <article
-      className={cn(
-        "group relative grid gap-4 rounded-[0.65rem] bg-white/80 p-5 shadow-[0_22px_70px_-58px_rgba(8,26,58,0.8)] backdrop-blur sm:grid-cols-[5rem_1fr_1.5rem] sm:items-center",
-      )}
-    >
-      <span
-        className={cn(
-          "[font-family:var(--font-challenge-ph-mono)] text-4xl font-semibold tracking-[-0.05em]",
-          isGold ? "text-[#D99B00]" : "text-[#0D6BFF]",
-        )}
-      >
-        [{number}]
-      </span>
-      <div className=" sm:pl-4">
-        <h3 className="[font-family:var(--font-challenge-ph-heading)] text-lg font-bold leading-tight text-[#081A3A]">
-          {title}
-        </h3>
-        <p className="max-w-xl text-sm font-semibold leading-6 text-[#405979]">
-          {body}
-        </p>
-      </div>
-      <ChevronRight
-        className={cn(
-          "hidden h-5 w-5 justify-self-end sm:block",
-          isGold ? "text-[#D99B00]" : "text-[#0D6BFF]",
-        )}
-      />
-      <div
-        className={cn(
-          "pointer-events-none absolute bottom-5 right-8 h-16 w-24 opacity-45 [background-image:radial-gradient(currentColor_1px,transparent_1px)] [background-size:9px_9px]",
-          isGold ? "text-[#FFC83D]" : "text-[#8CC8FF]",
-        )}
-      />
-    </article>
   );
 }
 
@@ -193,7 +118,7 @@ function MissionPipeline() {
   return (
     <section className="relative overflow-hidden px-4 pb-16 pt-24 text-[#081A3A] sm:px-6 sm:pt-28 lg:px-8">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(13,107,255,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(13,107,255,0.045)_1px,transparent_1px)] bg-[size:38px_38px] [mask-image:linear-gradient(to_bottom,transparent_0rem,transparent_6rem,#000_18rem,transparent_88%)]" />
-      <div className="relative mx-auto max-w-5xl">
+      <div className="relative mx-auto max-w-6xl">
         <div className="text-center">
           <p className="[font-family:var(--font-challenge-ph-mono)] text-xs font-bold uppercase tracking-[0.18em] text-white">
             Mission Pipeline
@@ -202,74 +127,14 @@ function MissionPipeline() {
             Your path from challenge to impact
           </h2>
         </div>
-        <div className="relative mt-12 space-y-9 lg:ml-20">
-          <div className="absolute bottom-8 left-0 top-6 hidden w-px bg-gradient-to-b from-[#0D6BFF] via-[#0D6BFF] via-48% to-[#FFC83D] lg:block" />
-
-          <div className="relative lg:pl-14">
-            <div className="mb-4 flex items-center gap-3">
-              <div>
-                <p className="[font-family:var(--font-challenge-ph-mono)] text-xl font-black uppercase text-white">
-                  MAIN CHALLENGE
-                </p>
-                <p className="text-sm font-semibold text-white">
-                  Open to all participants
-                </p>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <PipelineStep
-                number="01"
-                title="Choose a Philippine challenge that matters to you"
-                body="Browse real briefs and pick a problem you care about solving."
-                accent="blue"
-              />
-              <PipelineStep
-                number="02"
-                title="Compete to build the best solution"
-                body="Study the brief, create your submission, and show how you think."
-                accent="blue"
-              />
-              <PipelineStep
-                number="03"
-                title="Win cash prizes and exclusive rewards"
-                body="Top solutions earn prizes, recognition, and a chance to go further."
-                accent="blue"
-              />
-            </div>
-          </div>
-
-          <div className="relative lg:pl-14">
-            <div className="mb-4 flex items-center gap-3">
-              <div>
-                <p className="[font-family:var(--font-challenge-ph-mono)] text-xl font-bold uppercase  text-[#D99B00] ">
-                  OPTIONAL: SUPER CHALLENGE
-                </p>
-                <p className="text-sm font-semibold text-[#405979]">
-                  For selected winners
-                </p>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <PipelineStep
-                number="04"
-                title="Receive an invitation to implement your prototype"
-                body="Outstanding participants may be invited into the next stage."
-                accent="gold"
-              />
-              <PipelineStep
-                number="05"
-                title="Partner with senior leaders to bring your solution to life"
-                body="Collaborate with mentors, operators, and decision-makers to refine the work."
-                accent="gold"
-              />
-              <PipelineStep
-                number="06"
-                title="Earn your place on the ChallengePH Wall of Fame"
-                body="Ship real impact and get recognized as a standout builder."
-                accent="gold"
-              />
-            </div>
-          </div>
+        <div className="relative mt-10 overflow-hidden rounded-[0.8rem]">
+          <Image
+            src="/super-listings/pic1.png"
+            alt="ChallengePH mission pipeline"
+            width={1440}
+            height={960}
+            className="h-auto w-full"
+          />
         </div>
       </div>
     </section>
@@ -424,7 +289,7 @@ export default function SuperListingsLandingPage() {
       )}
     >
       <HeroSection />
-      <div className="relative -mt-40 overflow-hidden bg-[linear-gradient(to_bottom,#031226_0rem,#031226_10rem,#082044_22rem,#D9F0FF_38rem,#F8FBFF_54rem,#FFFFFF_70rem)] pt-40">
+      <div className="relative overflow-hidden bg-[linear-gradient(to_bottom,#031226_0rem,#082044_12rem,#D9F0FF_28rem,#F8FBFF_42rem,#FFFFFF_58rem)]">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(140,200,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(140,200,255,0.08)_1px,transparent_1px)] bg-[size:40px_40px] opacity-35 [mask-image:linear-gradient(to_bottom,#000_0rem,transparent_30rem)]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(ellipse_at_50%_5rem,rgba(45,125,255,0.22),rgba(13,107,255,0.12)_34%,transparent_72%)]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#031226] to-transparent" />

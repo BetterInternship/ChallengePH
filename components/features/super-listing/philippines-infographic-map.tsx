@@ -821,35 +821,6 @@ function PhilippinesMap({
       )}
       <defs>
         <filter
-          id="challengeph-map-glow"
-          x="-45%"
-          y="-45%"
-          width="190%"
-          height="190%"
-        >
-          <feDropShadow
-            dx="0"
-            dy="0"
-            stdDeviation="2.5"
-            floodColor="#EAF6FF"
-            floodOpacity="0.34"
-          />
-          <feDropShadow
-            dx="0"
-            dy="0"
-            stdDeviation="6"
-            floodColor="#2D7DFF"
-            floodOpacity="0.58"
-          />
-          <feDropShadow
-            dx="0"
-            dy="0"
-            stdDeviation="18"
-            floodColor="#2D7DFF"
-            floodOpacity="0.22"
-          />
-        </filter>
-        <filter
           id="challengeph-node-glow"
           x="-80%"
           y="-80%"
@@ -909,7 +880,7 @@ function PhilippinesMap({
           />
         </filter>
       </defs>
-      <g filter={isBackground ? undefined : "url(#challengeph-map-glow)"}>
+      <g>
         {projectedProvinces.map(({ feature: province, path }, index) => {
           const provinceName = getProvinceName(province);
 
@@ -1089,10 +1060,6 @@ export function ChallengePhInteractiveMap({
 
   return (
     <div className={cn("relative w-full", className)}>
-      <div className="pointer-events-none absolute inset-[-8%] bg-[radial-gradient(circle_at_64%_48%,rgba(13,107,255,0.34),transparent_46%),radial-gradient(circle_at_72%_70%,rgba(140,200,255,0.16),transparent_24%),radial-gradient(circle_at_50%_50%,transparent_0%,rgba(3,18,38,0.18)_78%)]" />
-      <div className="pointer-events-none absolute inset-0 rounded-full bg-[#0D6BFF]/24 blur-3xl" />
-      <div className="pointer-events-none absolute inset-8 rounded-full bg-[#8CC8FF]/12 blur-2xl" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_54%,rgba(3,18,38,0.22)_100%)]" />
       {provinceFeatures.length > 0 ? (
         <PhilippinesMap
           provinceFeatures={provinceFeatures}
