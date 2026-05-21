@@ -827,20 +827,86 @@ function PhilippinesMap({
           width="190%"
           height="190%"
         >
-          <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#EAF6FF" floodOpacity="0.34" />
-          <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#2D7DFF" floodOpacity="0.58" />
-          <feDropShadow dx="0" dy="0" stdDeviation="18" floodColor="#2D7DFF" floodOpacity="0.22" />
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="2.5"
+            floodColor="#EAF6FF"
+            floodOpacity="0.34"
+          />
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="6"
+            floodColor="#2D7DFF"
+            floodOpacity="0.58"
+          />
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="18"
+            floodColor="#2D7DFF"
+            floodOpacity="0.22"
+          />
         </filter>
-        <filter id="challengeph-node-glow" x="-80%" y="-80%" width="260%" height="260%">
-          <feDropShadow dx="0" dy="0" stdDeviation="5" floodColor="#2D7DFF" floodOpacity="0.95" />
-          <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="#8CC8FF" floodOpacity="0.35" />
+        <filter
+          id="challengeph-node-glow"
+          x="-80%"
+          y="-80%"
+          width="260%"
+          height="260%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="5"
+            floodColor="#2D7DFF"
+            floodOpacity="0.95"
+          />
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="12"
+            floodColor="#8CC8FF"
+            floodOpacity="0.35"
+          />
         </filter>
-        <filter id="challengeph-line-glow" x="-40%" y="-40%" width="180%" height="180%">
-          <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#8CC8FF" floodOpacity="0.7" />
+        <filter
+          id="challengeph-line-glow"
+          x="-40%"
+          y="-40%"
+          width="180%"
+          height="180%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="3"
+            floodColor="#8CC8FF"
+            floodOpacity="0.7"
+          />
         </filter>
-        <filter id="challengeph-warm-node-glow" x="-90%" y="-90%" width="280%" height="280%">
-          <feDropShadow dx="0" dy="0" stdDeviation="5" floodColor="#FF9D3D" floodOpacity="0.95" />
-          <feDropShadow dx="0" dy="0" stdDeviation="15" floodColor="#FFD36A" floodOpacity="0.46" />
+        <filter
+          id="challengeph-warm-node-glow"
+          x="-90%"
+          y="-90%"
+          width="280%"
+          height="280%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="5"
+            floodColor="#FF9D3D"
+            floodOpacity="0.95"
+          />
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="15"
+            floodColor="#FFD36A"
+            floodOpacity="0.46"
+          />
         </filter>
       </defs>
       <g filter={isBackground ? undefined : "url(#challengeph-map-glow)"}>
@@ -1050,11 +1116,12 @@ const entranceViewport = {
 function GuideSection() {
   return (
     <section className="relative bg-white text-[#081A3A] mt-12">
+      <div className="pointer-events-none absolute inset-0 bg-[size:44px_44px] opacity-60 [mask-image:linear-gradient(to_bottom,#000_0%,transparent_78%)]" />
       <div className="relative w-full p-0">
         <img
           src="/images/how.png"
-          className="w-full h-full object-contain"
           alt="How Challenge PH works"
+          className="w-full h-full object-contain"
         />
       </div>
     </section>

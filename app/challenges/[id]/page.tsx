@@ -63,7 +63,7 @@ export async function generateMetadata({
 
   if (!challenge) {
     return {
-      title: "Challenge PH",
+      title: "Challenge PH | BetterInternship",
     };
   }
 
@@ -367,9 +367,9 @@ export default async function ChallengePage({ params }: PageProps) {
                       </h2>
                     </div>
                     <p className="text-sm font-semibold leading-6 text-[#28466f]">
-                      This page is focused on understanding the problem and
-                      reward. Submission actions will be added once the final
-                      Challenge PH flow is ready.
+                      This placeholder page is focused on understanding the
+                      problem and reward. Submission actions can be added once
+                      the final Challenge PH flow is ready.
                     </p>
                   </div>
                   <Link
