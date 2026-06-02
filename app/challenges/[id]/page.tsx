@@ -5,17 +5,15 @@ import { notFound } from "next/navigation";
 import { JetBrains_Mono, Open_Sans, Space_Grotesk } from "next/font/google";
 import {
   ArrowLeft,
-  ArrowRight,
   Building2,
   CalendarDays,
-  CheckCircle2,
   Clock3,
   MapPin,
   Sparkles,
-  Target,
   Trophy,
 } from "lucide-react";
 
+import { ChallengeTabs } from "@/components/features/challenge/challenge-tabs";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
@@ -73,36 +71,6 @@ export async function generateMetadata({
   };
 }
 
-function SectionTitle({ eyebrow, title }: { eyebrow?: string; title: string }) {
-  return (
-    <div className="space-y-1">
-      {eyebrow ? (
-        <p className="[font-family:var(--font-challenge-ph-mono)] text-xs font-semibold uppercase tracking-[0.14em] text-[#0D6BFF]">
-          {eyebrow}
-        </p>
-      ) : null}
-      <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.035em] text-[#081A3A] sm:text-2xl">
-        {title}
-      </h2>
-    </div>
-  );
-}
-
-function AsteriskList({ items }: { items: readonly string[] }) {
-  return (
-    <ul className="space-y-2.5">
-      {items.map((item) => (
-        <li key={item} className="flex gap-2.5">
-          <span className="mt-0.5 shrink-0 [font-family:var(--font-challenge-ph-mono)] text-sm font-semibold leading-6 text-[#0D6BFF]">
-            *
-          </span>
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
   const details = [
     {
@@ -147,16 +115,6 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
         <h2 className="mt-2 [font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.04em] text-[#081A3A]">
           {challenge.host}
         </h2>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {challenge.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-[0.33em] bg-[#eef7ff] px-2.5 py-1 [font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#28466f]"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </Card>
 
       <Card className="rounded-[0.33em] border-[#dbe6f5] bg-white p-4 shadow-[0_24px_70px_-60px_rgba(8,26,58,0.72)]">
@@ -194,26 +152,6 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
         </div>
       </Card>
     </aside>
-  );
-}
-
-function Timeline({ challenge }: { challenge: ChallengePhChallenge }) {
-  return (
-    <div className="grid gap-3 sm:grid-cols-3">
-      {challenge.timeline.map((item) => (
-        <div
-          key={item.label}
-          className="rounded-[0.33em] border border-[#dbe6f5] bg-white px-4 py-3"
-        >
-          <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#28466f]/58">
-            {item.label}
-          </p>
-          <p className="mt-1 [font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.03em] text-[#081A3A]">
-            {item.detail}
-          </p>
-        </div>
-      ))}
-    </div>
   );
 }
 
@@ -294,94 +232,12 @@ export default async function ChallengePage({ params }: PageProps) {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(13,107,255,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(13,107,255,0.045)_1px,transparent_1px)] bg-[size:44px_44px] opacity-55 [mask-image:linear-gradient(to_bottom,transparent_0rem,transparent_16rem,#000_28rem)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20rem,rgba(13,107,255,0.1),transparent_18rem),radial-gradient(circle_at_30%_86%,rgba(13,107,255,0.08),transparent_28%)]" />
         <div className="relative mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10">
-          <div className="self-start">
+          <div className="self-start lg:pt-16">
             <DetailRail challenge={challenge} />
           </div>
 
           <div className="min-w-0 self-start">
-            <div className="space-y-5 rounded-[0.75em] border border-[#dbe6f5] bg-white p-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
-              <section className="space-y-3.5">
-                <SectionTitle eyebrow="Problem" title="What needs solving" />
-                <p className="text-sm font-semibold leading-7 text-[#28466f] sm:text-[0.95rem]">
-                  {challenge.problem}
-                </p>
-              </section>
-
-              <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-                <SectionTitle
-                  eyebrow="Why it matters"
-                  title="The Philippine context"
-                />
-                <p className="text-sm font-semibold leading-7 text-[#28466f] sm:text-[0.95rem]">
-                  {challenge.whyItMatters}
-                </p>
-              </section>
-
-              <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-                <SectionTitle eyebrow="Challenge brief" title="Your task" />
-                <AsteriskList items={challenge.brief} />
-              </section>
-
-              <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-                <SectionTitle eyebrow="Output" title="What to submit" />
-                <AsteriskList items={challenge.deliverables} />
-              </section>
-
-              <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-                <SectionTitle eyebrow="Eligibility" title="Who can join" />
-                <AsteriskList items={challenge.eligibility} />
-              </section>
-
-              <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-                <SectionTitle eyebrow="Timeline" title="Important dates" />
-                <Timeline challenge={challenge} />
-              </section>
-
-              <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-                <SectionTitle
-                  eyebrow="Judging"
-                  title="How strong submissions stand out"
-                />
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {challenge.judgingCriteria.map((criterion) => (
-                    <div
-                      key={criterion}
-                      className="flex gap-3 rounded-[0.33em] border border-[#dbe6f5] bg-[#f7fbff] px-4 py-3"
-                    >
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#0D6BFF]" />
-                      <p className="text-sm font-semibold leading-6 text-[#28466f]">
-                        {criterion}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="rounded-[0.33em] border border-[#0D6BFF]/20 bg-[#eef7ff] p-5">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="max-w-xl space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-[#0D6BFF]" />
-                      <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.035em] text-[#081A3A]">
-                        Build for the brief, not for a resume screen.
-                      </h2>
-                    </div>
-                    <p className="text-sm font-semibold leading-6 text-[#28466f]">
-                      This placeholder page is focused on understanding the
-                      problem and reward. Submission actions can be added once
-                      the final Challenge PH flow is ready.
-                    </p>
-                  </div>
-                  <Link
-                    href="/search"
-                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-[0.33em] bg-[#0D6BFF] px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold text-white transition-colors hover:bg-[#0A56CC]"
-                  >
-                    See all challenges
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </section>
-            </div>
+            <ChallengeTabs challenge={challenge} />
           </div>
         </div>
       </section>
