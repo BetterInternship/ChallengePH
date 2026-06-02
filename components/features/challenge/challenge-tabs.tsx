@@ -746,21 +746,18 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <Radio className="h-4 w-4 text-[#0D6BFF]" />
-                <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#5E7392]">
+                <Radio className="h-6 w-6 text-[#0D6BFF]" />
+                <p className="[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]">
                   Live leaderboard
                 </p>
               </div>
-              <p className="[font-family:var(--font-challenge-ph-heading)] mt-2 text-2xl font-black tracking-[-0.04em] text-[#081A3A]">
-                {challenge.shortTitle}
-              </p>
             </div>
-            <div className="flex gap-5 text-sm font-bold text-[#5E7392]">
-              <p>
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-3">
+              <p className="rounded-[0.33em] bg-[#f7fbff] px-3 py-2 text-sm font-bold text-[#5E7392]">
                 <span className="text-[#081A3A]">{entries.length + 14}</span>{" "}
                 active teams
               </p>
-              <p>
+              <p className="rounded-[0.33em] bg-[#f7fbff] px-3 py-2 text-sm font-bold text-[#5E7392]">
                 <span className="text-[#081A3A]">{7 + (tick % 4)}</span> new
                 moves today
               </p>
@@ -774,7 +771,7 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
               <div
                 key={`${entry.teamName}-${tick}`}
                 className={cn(
-                  "leaderboard-row-move grid gap-3 border-b border-[#e8eef6] px-5 py-4 transition-colors last:border-b-0 hover:bg-[#f8fbff] sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:px-6",
+                  "leaderboard-row-move grid gap-3 border-b border-[#e8eef6] px-4 py-4 transition-colors last:border-b-0 hover:bg-[#f8fbff] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-6",
                   entry.hasClimbed && "leaderboard-row-climbed",
                 )}
                 style={
@@ -783,19 +780,37 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
                   } as CSSProperties
                 }
               >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={cn(
-                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] text-sm font-black transition-transform",
-                      entry.hasClimbed && "leaderboard-rank-up",
-                    )}
-                    style={{
-                      backgroundColor:
-                        entry.rank <= 3 ? `${challenge.accent}14` : "#f1f6fc",
-                      color: entry.rank <= 3 ? challenge.accent : "#5E7392",
-                    }}
-                  >
-                    {entry.rank}
+                <div className="grid gap-3 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:gap-4">
+                  <div className="flex items-start justify-between gap-3 sm:block">
+                    <div
+                      className={cn(
+                        "flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] text-sm font-black transition-transform sm:h-10 sm:w-10",
+                        entry.hasClimbed && "leaderboard-rank-up",
+                      )}
+                      style={{
+                        backgroundColor:
+                          entry.rank <= 3 ? `${challenge.accent}14` : "#f1f6fc",
+                        color: entry.rank <= 3 ? challenge.accent : "#5E7392",
+                      }}
+                    >
+                      {entry.rank}
+                    </div>
+                    <div className="text-right sm:hidden">
+                      <p
+                        className="[font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
+                        style={{ color: challenge.accent }}
+                      >
+                        {entry.trend}
+                      </p>
+                      <p
+                        className={cn(
+                          "[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]",
+                          entry.moveDelta !== 0 && "leaderboard-score-live",
+                        )}
+                      >
+                        {entry.score}
+                      </p>
+                    </div>
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -803,14 +818,14 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
                         {entry.teamName}
                       </p>
                       {entry.rank <= 3 ? (
-                        <span className="inline-flex items-center gap-1 [font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#5E7392]">
+                        <span className="inline-flex items-center gap-1 rounded-[0.33em] bg-[#f7fbff] px-2 py-1 [font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#5E7392]">
                           <Flame className="h-3 w-3 text-[#F59E0B]" />
                           Trending
                         </span>
                       ) : null}
                       {entry.hasClimbed ? (
                         <span
-                          className="leaderboard-up-chip [font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
+                          className="leaderboard-up-chip rounded-[0.33em] bg-[#fff7df] px-2 py-1 [font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
                           style={{ color: challenge.accent }}
                         >
                           Up {entry.moveDelta}
@@ -820,13 +835,16 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
                     <p className="mt-1 text-sm font-semibold text-[#5E7392]">
                       {entry.school}
                     </p>
-                    <p className="mt-1 text-xs font-bold text-[#6B7F9B]">
-                      Latest: {entry.stage}
-                    </p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold">
+                      <span className="rounded-[0.33em] bg-[#f7fbff] px-2 py-1 text-[#6B7F9B]">
+                        {entry.stage}
+                      </span>
+                      <span className="text-[#7A8DA8]">{entry.updatedAt}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-3 sm:block sm:text-right">
+                <div className="hidden rounded-[0.33em] bg-[#fbfdff] px-4 py-3 sm:block sm:min-w-28 sm:text-right">
                   <div>
                     <p
                       className="[font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
@@ -843,11 +861,8 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
                       {entry.score}
                     </p>
                   </div>
-                  <p
-                    className="mt-0 text-xs font-semibold sm:mt-1"
-                    style={{ color: challenge.accent }}
-                  >
-                    Updated {entry.updatedAt}
+                  <p className="mt-1 text-xs font-semibold text-[#7A8DA8]">
+                    {entry.updatedAt}
                   </p>
                 </div>
               </div>
