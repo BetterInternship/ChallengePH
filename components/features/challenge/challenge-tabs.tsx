@@ -65,7 +65,7 @@ function ToggleSection({
   return (
     <section
       className={cn(
-        "space-y-3.5",
+        "space-y-3.5 px-5 sm:px-0",
         withDivider && "border-t border-[#dbe6f5] pt-5",
       )}
     >
@@ -458,7 +458,7 @@ function OverviewTab({
   ];
 
   return (
-    <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white p-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
+    <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white py-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
       {markdownSplit
         ? markdownSplit.overview.map((section, index) => (
             <ToggleSection
@@ -531,7 +531,7 @@ function ApplicationTab({ challenge }: { challenge: ChallengePhChallenge }) {
   ];
 
   return (
-    <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white p-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
+    <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white py-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
       {markdownSplit
         ? markdownSplit.application.map((section, index) => (
             <ToggleSection
