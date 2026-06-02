@@ -57,9 +57,9 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     summary:
       "Redesign how Browhaus manages bookings behind the scenes so teams can work with more clarity, less friction, and greater care.",
     problem:
-      "Every growing business eventually reaches the same moment: the tools that once helped them move fast begin to hold them back. For Browhaus, that moment is happening in booking operations. Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence. What used to be a simple spreadsheet is now part of a larger customer experience.",
+      "Every growing business eventually reaches the same moment: the tools that once helped them move fast begin to hold them back. For Browhaus, that moment is happening in booking operations. Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence.",
     whyItMatters:
-      "This challenge asks you to redesign how Browhaus manages bookings behind the scenes. A better system could help staff spend less time searching, updating, and coordinating, and more time serving customers well. The goal is not just to organize appointments. The goal is to design an operational experience that helps a growing service business work with more clarity, less friction, and greater care.",
+      "This challenge asks you to redesign how Browhaus manages bookings behind the scenes. A better system could help staff spend less time searching, updating, and coordinating, and more time serving customers well. ",
     brief: [
       "Map the current booking flow: customer inquiry or booking request, manual appointment encoding, schedule confirmation, appointment updates or reschedules, customer arrival and status tracking, and end-of-day review.",
       "Identify where friction happens and propose a better way for the workflow to operate.",
@@ -104,17 +104,11 @@ For Browhaus, that moment is happening in booking operations.
 
 Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence.
 
-What used to be a simple spreadsheet is now part of a larger customer experience.
-
 ## The Opportunity
 
 This challenge asks **YOU** to redesign how Browhaus manages bookings behind the scenes.
 
 A better system could help staff spend less time searching, updating, and coordinating — and more time serving customers well.
-
-The goal is not just to organize appointments.
-
-The goal is to design an operational experience that helps a growing service business work with more clarity, less friction, and greater care.
 
 ### Current Workflow
 
