@@ -26,6 +26,54 @@ export type ChallengePhChallenge = {
 
 export const challengePhChallenges: ChallengePhChallenge[] = [
   {
+    id: "browhaus-booking-operations",
+    host: "Browhaus",
+    sector: "Service operations and customer experience",
+    title: "Beyond the Spreadsheet: Reimagining how Browhaus handles bookings",
+    shortTitle: "Beyond the Spreadsheet",
+    reward: "TBD",
+    rewardType: "Browhaus operations challenge",
+    deadline: "TBD",
+    location: "Philippines",
+    difficulty: "Intermediate",
+    summary:
+      "Design a smarter booking operations system that helps Browhaus manage appointments more efficiently and reduce scheduling friction.",
+    problem:
+      "Browhaus currently manages daily bookings through Google Sheets. While the setup is familiar and flexible, it becomes harder to maintain as appointments grow, coordination increases, and the risk of human error rises.",
+    whyItMatters:
+      "Operational friction behind the scenes directly shapes customer experience. Missed appointments, delayed responses, and clunky scheduling processes can turn small internal issues into visible service problems as a business scales.",
+    brief: [
+      "Create a better booking operations system for Browhaus that helps staff stay organized and work faster.",
+      "Your concept can be an internal dashboard, automation layer, AI-assisted scheduling tool, redesigned workflow, or another practical operations approach.",
+      "Focus on solutions that feel thoughtful, intuitive, and genuinely useful in a real service business environment.",
+    ],
+    eligibility: [
+      "Open to students and early-career builders.",
+      "Solo submissions and teams are welcome.",
+      "Specific eligibility requirements are to be announced by Browhaus.",
+    ],
+    deliverables: [
+      "Solution overview.",
+      "Product mockups or prototypes.",
+      "Workflow explanations.",
+      "Implementation considerations.",
+      "Optional demo or MVP.",
+    ],
+    timeline: [
+      { label: "Brief opens", detail: "TBD" },
+      { label: "Submission deadline", detail: "TBD" },
+      { label: "Review period", detail: "TBD" },
+    ],
+    judgingCriteria: [
+      "Intuitiveness for day-to-day team use.",
+      "Scalability as booking volume grows.",
+      "Ease of adoption for Browhaus staff.",
+      "Fit with real operational needs and customer experience goals.",
+    ],
+    tags: ["Operations", "Booking", "Customer experience"],
+    accent: "#8B5CF6",
+  },
+  {
     id: "flood-ready-commutes",
     host: "Urban Mobility Lab",
     sector: "Transport and disaster response",
