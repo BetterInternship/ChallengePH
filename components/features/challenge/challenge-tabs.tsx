@@ -55,12 +55,14 @@ function ToggleSection({
   title,
   children,
   withDivider = true,
+  defaultOpen = true,
 }: {
   title: string;
   children: ReactNode;
   withDivider?: boolean;
+  defaultOpen?: boolean;
 }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <section
@@ -557,7 +559,7 @@ function ApplicationTab({ challenge }: { challenge: ChallengePhChallenge }) {
           ))}
 
       {challenge.winningCriteria ? (
-        <ToggleSection title="Winning Criteria" withDivider>
+        <ToggleSection title="Winning Criteria" withDivider defaultOpen={false}>
           <WinningCriteriaTable criteria={challenge.winningCriteria} />
         </ToggleSection>
       ) : null}
@@ -650,7 +652,7 @@ function FaqItem({
   answer: readonly string[];
   withDivider: boolean;
 }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <section
