@@ -112,9 +112,20 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
         <p className="[font-family:var(--font-challenge-ph-mono)] text-xs font-semibold uppercase tracking-[0.14em] text-[#28466f]/62">
           Posted by
         </p>
-        <h2 className="mt-2 [font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.04em] text-[#081A3A]">
-          {challenge.host}
-        </h2>
+        <div className="mt-4 space-y-4">
+          {challenge.logo ? (
+            <Image
+              src={challenge.logo}
+              alt={`${challenge.host} logo`}
+              width={96}
+              height={42}
+              className="h-auto max-h-8 w-auto max-w-full object-contain"
+            />
+          ) : null}
+          <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.04em] text-[#081A3A]">
+            {challenge.host}
+          </h2>
+        </div>
       </Card>
 
       <Card className="rounded-[0.33em] border-[#dbe6f5] bg-white p-4 shadow-[0_24px_70px_-60px_rgba(8,26,58,0.72)]">
@@ -125,7 +136,7 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
             return (
               <div key={detail.label} className="flex items-start gap-3">
                 <div
-                  className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] bg-[#eef7ff]"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] bg-[#eef7ff]"
                   style={{
                     color: detail.emphasized ? challenge.accent : "#0D6BFF",
                   }}
@@ -133,12 +144,12 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#28466f]/58">
+                  <p className="[font-family:var(--font-challenge-ph-mono)] text-xs uppercase text-[#28466f]/58">
                     {detail.label}
                   </p>
                   <p
                     className={cn(
-                      "mt-1 [font-family:var(--font-challenge-ph-body)] text-sm font-bold leading-snug text-[#081A3A]",
+                      "[font-family:var(--font-challenge-ph-body)] text-sm font-semibold text-[#081A3A]",
                       detail.emphasized && "text-base",
                     )}
                     style={detail.emphasized ? { color: challenge.accent } : {}}
@@ -209,6 +220,16 @@ export default async function ChallengePage({ params }: PageProps) {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#001138]" />
         <div className="relative mx-auto max-w-6xl">
           <div className="max-w-4xl">
+            {challenge.logo ? (
+              <Image
+                src={challenge.logo}
+                alt={`${challenge.host} logo`}
+                width={104}
+                height={42}
+                className="mb-6 h-auto max-h-8 w-auto object-contain"
+                priority
+              />
+            ) : null}
             <h1 className="mt-4 [font-family:var(--font-challenge-ph-heading)] text-[clamp(2.1rem,5.5vw,5rem)] font-black leading-[0.98] tracking-[-0.06em] text-[#FFF7E8]">
               {challenge.title}
             </h1>
@@ -232,7 +253,7 @@ export default async function ChallengePage({ params }: PageProps) {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(13,107,255,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(13,107,255,0.045)_1px,transparent_1px)] bg-[size:44px_44px] opacity-55 [mask-image:linear-gradient(to_bottom,transparent_0rem,transparent_16rem,#000_28rem)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20rem,rgba(13,107,255,0.1),transparent_18rem),radial-gradient(circle_at_30%_86%,rgba(13,107,255,0.08),transparent_28%)]" />
         <div className="relative mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10">
-          <div className="self-start lg:pt-16">
+          <div className="self-start lg:pt-[3.75rem]">
             <DetailRail challenge={challenge} />
           </div>
 

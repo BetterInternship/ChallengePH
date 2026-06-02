@@ -1,9 +1,10 @@
 "use client";
 
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 import {
-  CheckCircle2,
+  ChevronDown,
   Flame,
+  MessageCircleQuestion,
   Radio,
   Sparkles,
   Target,
@@ -14,7 +15,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { type ChallengePhChallenge } from "@/lib/challenges/data";
 
-type ChallengeTab = "overview" | "leaderboard";
+type ChallengeTab = "overview" | "leaderboard" | "faq";
 
 type LeaderboardEntry = {
   teamName: string;
@@ -25,18 +26,45 @@ type LeaderboardEntry = {
   updatedAt: string;
 };
 
-function SectionTitle({ eyebrow, title }: { eyebrow?: string; title: string }) {
+function SectionTitle({ title }: { title: string }) {
   return (
-    <div className="space-y-1">
-      {eyebrow ? (
-        <p className="[font-family:var(--font-challenge-ph-mono)] text-xs font-semibold uppercase tracking-[0.14em] text-[#0D6BFF]">
-          {eyebrow}
-        </p>
-      ) : null}
+    <div>
       <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.035em] text-[#081A3A] sm:text-2xl">
         {title}
       </h2>
     </div>
+  );
+}
+
+function ToggleSection({
+  title,
+  children,
+  withDivider = true,
+}: {
+  title: string;
+  children: ReactNode;
+  withDivider?: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <section className={cn("space-y-3.5", withDivider && "border-t border-[#dbe6f5] pt-5")}>
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        className="flex w-full items-start justify-between gap-4 text-left"
+        aria-expanded={isOpen}
+      >
+        <SectionTitle title={title} />
+        <ChevronDown
+          className={cn(
+            "mt-1 h-5 w-5 shrink-0 text-[#5E7392] transition-transform",
+            isOpen && "rotate-180",
+          )}
+        />
+      </button>
+      {isOpen ? <div>{children}</div> : null}
+    </section>
   );
 }
 
@@ -55,18 +83,28 @@ function AsteriskList({ items }: { items: readonly string[] }) {
   );
 }
 
+function PlainTextList({ items }: { items: readonly string[] }) {
+  return (
+    <div className="space-y-2.5">
+      {items.map((item) => (
+        <p key={item}>{item}</p>
+      ))}
+    </div>
+  );
+}
+
 function Timeline({ challenge }: { challenge: ChallengePhChallenge }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-3">
+    <div className="space-y-3">
       {challenge.timeline.map((item) => (
         <div
           key={item.label}
-          className="rounded-[0.33em] border border-[#dbe6f5] bg-white px-4 py-3"
+          className="flex flex-col gap-1 border-l-2 border-[#dbe6f5] pl-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
         >
-          <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#28466f]/58">
+          <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#28466f]/58 sm:min-w-36">
             {item.label}
           </p>
-          <p className="[font-family:var(--font-challenge-ph-heading)] mt-1 text-base font-black tracking-[-0.03em] text-[#081A3A]">
+          <p className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.03em] text-[#081A3A] sm:flex-1">
             {item.detail}
           </p>
         </div>
@@ -170,78 +208,138 @@ function getLeaderboardEntries(
 function OverviewTab({ challenge }: { challenge: ChallengePhChallenge }) {
   return (
     <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white p-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
-      <section className="space-y-3.5">
-        <SectionTitle eyebrow="Problem" title="What needs solving" />
-        <p className="text-sm font-semibold leading-7 text-[#28466f] sm:text-[0.95rem]">
-          {challenge.problem}
-        </p>
-      </section>
+      <ToggleSection
+        title="What needs solving"
+        withDivider={false}
+      >
+        <PlainTextList items={[challenge.problem, challenge.whyItMatters]} />
+      </ToggleSection>
 
-      <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-        <SectionTitle eyebrow="Why it matters" title="The Philippine context" />
-        <p className="text-sm font-semibold leading-7 text-[#28466f] sm:text-[0.95rem]">
-          {challenge.whyItMatters}
-        </p>
-      </section>
-
-      <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-        <SectionTitle eyebrow="Challenge brief" title="Your task" />
+      <ToggleSection title="Your task">
         <AsteriskList items={challenge.brief} />
-      </section>
+      </ToggleSection>
 
-      <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-        <SectionTitle eyebrow="Output" title="What to submit" />
+      <ToggleSection title="What to submit">
         <AsteriskList items={challenge.deliverables} />
-      </section>
+      </ToggleSection>
 
-      <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-        <SectionTitle eyebrow="Eligibility" title="Who can join" />
+      <ToggleSection title="Who can join">
         <AsteriskList items={challenge.eligibility} />
-      </section>
+      </ToggleSection>
 
-      <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-        <SectionTitle eyebrow="Timeline" title="Important dates" />
+      <ToggleSection title="Important dates">
         <Timeline challenge={challenge} />
-      </section>
+      </ToggleSection>
 
-      <section className="space-y-3.5 border-t border-[#dbe6f5] pt-5">
-        <SectionTitle
-          eyebrow="Judging"
-          title="How strong submissions stand out"
-        />
-        <div className="grid gap-3 sm:grid-cols-2">
-          {challenge.judgingCriteria.map((criterion) => (
-            <div
-              key={criterion}
-              className="flex gap-3 rounded-[0.33em] border border-[#dbe6f5] bg-[#f7fbff] px-4 py-3"
-            >
-              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#0D6BFF]" />
-              <p className="text-sm font-semibold leading-6 text-[#28466f]">
-                {criterion}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="rounded-[0.33em] border border-[#0D6BFF]/20 bg-[#eef7ff] p-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="max-w-xl space-y-2">
-            <div className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-[#0D6BFF]" />
-              <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.035em] text-[#081A3A]">
-                Build for the brief, not for a resume screen.
-              </h2>
-            </div>
-            <p className="text-sm font-semibold leading-6 text-[#28466f]">
-              This placeholder page is focused on understanding the problem and
-              reward. Submission actions can be added once the final Challenge
-              PH flow is ready.
-            </p>
+      <section className="rounded-[0.33em] border border-[#B77900]/30 bg-[#fff7df] p-5">
+        <div className="max-w-xl space-y-2">
+          <div className="flex items-center gap-2">
+            <Target className="h-5 w-5 text-[#B77900]" />
+            <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.035em] text-[#081A3A]">
+              Ready to submit your approach?
+            </h2>
           </div>
+          <p className="text-sm font-semibold leading-6 text-[#28466f]">
+            Prepare a clear solution overview, show how the workflow would
+            operate in practice, and explain what {challenge.host} would need to
+            pilot or adopt it.
+          </p>
         </div>
       </section>
     </div>
+  );
+}
+
+function FaqTab({ challenge }: { challenge: ChallengePhChallenge }) {
+  const faqItems = [
+    {
+      question: "How strong submissions stand out",
+      answer: challenge.judgingCriteria,
+    },
+    {
+      question: "Do I need a working app to submit?",
+      answer: [
+        "No. A clear prototype, workflow, service blueprint, or proof of concept is enough if it explains the solution well.",
+      ],
+    },
+    {
+      question: "Can teams submit together?",
+      answer: challenge.eligibility.filter((item) =>
+        item.toLowerCase().includes("team"),
+      ).length
+        ? challenge.eligibility.filter((item) =>
+            item.toLowerCase().includes("team"),
+          )
+        : ["Yes. Solo builders and small teams can submit."],
+    },
+    {
+      question: "What should the submission focus on?",
+      answer: [
+        "Focus on the real workflow, who uses it, how it reduces friction, and what would be needed to pilot it with the host.",
+      ],
+    },
+    {
+      question: "Can I use mock data?",
+      answer: [
+        "Yes. Use public, synthetic, or clearly labeled sample data unless you have permission to use real operational data.",
+      ],
+    },
+  ];
+
+  return (
+    <div className="rounded-[0.33em] border border-[#dbe6f5] bg-white text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)]">
+      <div className="px-5 py-5 sm:px-6">
+        <h2 className="[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]">
+          FAQs
+        </h2>
+      </div>
+      {faqItems.map((item, index) => (
+        <FaqItem
+          key={item.question}
+          question={item.question}
+          answer={item.answer}
+          withDivider
+        />
+      ))}
+    </div>
+  );
+}
+
+function FaqItem({
+  question,
+  answer,
+  withDivider,
+}: {
+  question: string;
+  answer: readonly string[];
+  withDivider: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <section className={cn("px-5 py-4 sm:px-6", withDivider && "border-t border-[#dbe6f5]")}>
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        className="flex w-full items-center justify-between gap-4 text-left"
+        aria-expanded={isOpen}
+      >
+        <h2 className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.025em] text-[#081A3A] sm:text-lg">
+          {question}
+        </h2>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 shrink-0 text-[#5E7392] transition-transform",
+            isOpen && "rotate-180",
+          )}
+        />
+      </button>
+      {isOpen ? (
+        <div className="mt-3">
+          <AsteriskList items={answer} />
+        </div>
+      ) : null}
+    </section>
   );
 }
 
@@ -492,6 +590,11 @@ export function ChallengeTabs({
       label: "Leaderboard",
       icon: Trophy,
     },
+    {
+      id: "faq" as const,
+      label: "FAQ",
+      icon: MessageCircleQuestion,
+    },
   ];
 
   return (
@@ -510,9 +613,16 @@ export function ChallengeTabs({
                 className={cn(
                   "inline-flex h-11 items-center gap-2 rounded-[0.33em] px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold transition-colors",
                   isActive
-                    ? "bg-white text-[#081A3A] shadow-[0_18px_46px_-32px_rgba(255,255,255,0.75)]"
+                    ? "text-white shadow-[0_18px_46px_-32px_rgba(8,26,58,0.7)]"
                     : "text-white hover:bg-white/10 hover:text-white",
                 )}
+                style={
+                  isActive
+                    ? {
+                        backgroundColor: challenge.accent,
+                      }
+                    : undefined
+                }
               >
                 <Icon
                   className={cn(
@@ -529,6 +639,8 @@ export function ChallengeTabs({
 
       {activeTab === "overview" ? (
         <OverviewTab challenge={challenge} />
+      ) : activeTab === "faq" ? (
+        <FaqTab challenge={challenge} />
       ) : (
         <LeaderboardTab challenge={challenge} />
       )}

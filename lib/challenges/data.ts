@@ -22,6 +22,7 @@ export type ChallengePhChallenge = {
   judgingCriteria: string[];
   tags: string[];
   accent: string;
+  logo?: string;
 };
 
 export const challengePhChallenges: ChallengePhChallenge[] = [
@@ -71,7 +72,8 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Fit with real operational needs and customer experience goals.",
     ],
     tags: ["Operations", "Booking", "Customer experience"],
-    accent: "#8B5CF6",
+    accent: "#B77900",
+    logo: "/images/companies/browhaus_logo.png",
   },
   {
     id: "flood-ready-commutes",
@@ -117,7 +119,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Strength of risk and edge-case thinking.",
     ],
     tags: ["Mobility", "Climate", "Student safety"],
-    accent: "#0D6BFF",
+    accent: "#B77900",
   },
   {
     id: "sari-sari-stockouts",
@@ -163,7 +165,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Potential to improve store income.",
     ],
     tags: ["MSME", "Retail", "Forecasting"],
-    accent: "#00A886",
+    accent: "#B77900",
   },
   {
     id: "barangay-health-queues",
@@ -209,7 +211,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Measurable improvement plan.",
     ],
     tags: ["Health", "Operations", "Service design"],
-    accent: "#E5484D",
+    accent: "#B77900",
   },
   {
     id: "agri-cold-chain",
@@ -255,7 +257,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Pilot feasibility.",
     ],
     tags: ["Agriculture", "Logistics", "Food waste"],
-    accent: "#2E7D32",
+    accent: "#B77900",
   },
   {
     id: "jeepney-demand-dashboard",
@@ -301,7 +303,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Impact on commuter wait time and driver economics.",
     ],
     tags: ["Transport", "Data", "Operations"],
-    accent: "#F5A400",
+    accent: "#B77900",
   },
   {
     id: "coastal-plastic-recovery",
@@ -347,7 +349,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Environmental and livelihood impact.",
     ],
     tags: ["Environment", "Circular economy", "Community"],
-    accent: "#0084A8",
+    accent: "#B77900",
   },
   {
     id: "ofw-remittance-helper",
@@ -393,7 +395,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Potential to improve household financial stability.",
     ],
     tags: ["Fintech", "OFW", "Behavioral design"],
-    accent: "#7C3AED",
+    accent: "#B77900",
   },
   {
     id: "shs-skills-mapper",
@@ -439,7 +441,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Potential employer relevance.",
     ],
     tags: ["Education", "Workforce", "Career discovery"],
-    accent: "#C2410C",
+    accent: "#B77900",
   },
 ];
 
