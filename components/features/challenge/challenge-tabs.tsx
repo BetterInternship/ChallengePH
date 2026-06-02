@@ -115,6 +115,24 @@ function PlainTextList({ items }: { items: readonly string[] }) {
   );
 }
 
+function SuccessMetricsList({ items }: { items: readonly string[] }) {
+  return (
+    <div className="space-y-3">
+      {items.map((item) => {
+        const [label, ...rest] = item.split(": ");
+        const description = rest.join(": ");
+
+        return (
+          <div key={item} className="leading-6 text-[#28466f]">
+            <div className="font-bold text-blue-500">{label}</div>
+            {description ? `${description}` : ""}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function MarkdownText({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
 
@@ -561,6 +579,23 @@ function ApplicationTab({ challenge }: { challenge: ChallengePhChallenge }) {
       {challenge.winningCriteria ? (
         <ToggleSection title="Winning Criteria" withDivider defaultOpen={false}>
           <WinningCriteriaTable criteria={challenge.winningCriteria} />
+        </ToggleSection>
+      ) : null}
+
+      {challenge.successMetrics?.length ? (
+        <ToggleSection title="Success Metrics" withDivider defaultOpen={false}>
+          <div className="space-y-4">
+            {challenge.objective ? (
+              <div>
+                <span className="font-bold text-[#B77900]">Objective</span>
+
+                <p className="leading-6 text-[#28466f]">
+                  {challenge.objective}
+                </p>
+              </div>
+            ) : null}
+            <SuccessMetricsList items={challenge.successMetrics} />
+          </div>
         </ToggleSection>
       ) : null}
 

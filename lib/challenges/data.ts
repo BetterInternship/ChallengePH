@@ -39,6 +39,8 @@ export type ChallengePhChallenge = {
     weight: string;
     description: string;
   }>;
+  successMetrics?: string[];
+  objective?: string;
   submissionCalloutTitle?: string;
 };
 
@@ -154,43 +156,15 @@ Your video should:
 * and explain why it is realistic for Browhaus to pilot.
 
 Upload the video as an unlisted YouTube link.`,
-    winningCriteria: [
-      {
-        criteria: "Operational Impact",
-        weight: "25%",
-        description:
-          "Reduces manual work, improves coordination, and solves real workflow problems.",
-      },
-      {
-        criteria: "Ease of Use",
-        weight: "20%",
-        description: "Clear, intuitive experience for day-to-day staff use.",
-      },
-      {
-        criteria: "Feasibility",
-        weight: "20%",
-        description:
-          "Realistic to pilot and implement in a service business environment.",
-      },
-      {
-        criteria: "Scalability",
-        weight: "15%",
-        description:
-          "Able to support growing booking volume and operational complexity.",
-      },
-      {
-        criteria: "Customer Experience",
-        weight: "10%",
-        description:
-          "Improves speed, clarity, reliability, or overall service experience.",
-      },
-      {
-        criteria: "Quality of Thinking",
-        weight: "10%",
-        description:
-          "Thoughtful understanding of the workflow, users, and operational needs.",
-      },
+    successMetrics: [
+      "Key Result 1: Reduces the number of manual steps needed to create, update, confirm, reschedule, or track a booking.",
+      "Key Result 2: Allows staff to search and filter bookings by customer name, date, status, service, or branch.",
+      "Key Result 3: Clearly shows booking status, including pending, confirmed, rescheduled, cancelled, completed, or no-show.",
+      "Key Result 4: Prevents or flags scheduling conflicts before a booking is confirmed.",
+      "Key Result 5: Includes a clear path for Browhaus to test the solution in a real branch or team workflow.",
     ],
+    objective:
+      "Design a booking operations system that helps Browhaus manage appointments with more speed, clarity, and reliability as the business grows.",
     submissionCalloutTitle: "Ready to reimagine booking operations?",
   },
   {
