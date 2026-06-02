@@ -15,7 +15,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { type ChallengePhChallenge } from "@/lib/challenges/data";
 
-type ChallengeTab = "overview" | "leaderboard" | "faq";
+type ChallengeTab = "overview" | "application" | "leaderboard" | "faq";
 
 type LeaderboardEntry = {
   teamName: string;
@@ -24,6 +24,21 @@ type LeaderboardEntry = {
   trend: string;
   stage: string;
   updatedAt: string;
+};
+
+type MarkdownBlock =
+  | {
+      type: "paragraph" | "heading";
+      text: string;
+    }
+  | {
+      type: "orderedList" | "unorderedList";
+      items: string[];
+    };
+
+type MarkdownSection = {
+  title: string;
+  blocks: MarkdownBlock[];
 };
 
 function SectionTitle({ title }: { title: string }) {
@@ -48,7 +63,12 @@ function ToggleSection({
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <section className={cn("space-y-3.5", withDivider && "border-t border-[#dbe6f5] pt-5")}>
+    <section
+      className={cn(
+        "space-y-3.5",
+        withDivider && "border-t border-[#dbe6f5] pt-5",
+      )}
+    >
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
@@ -70,13 +90,13 @@ function ToggleSection({
 
 function AsteriskList({ items }: { items: readonly string[] }) {
   return (
-    <ul className="space-y-2.5">
+    <ul className="space-y-1.5">
       {items.map((item) => (
         <li key={item} className="flex gap-2.5">
           <span className="mt-0.5 shrink-0 [font-family:var(--font-challenge-ph-mono)] text-sm font-semibold leading-6 text-[#0D6BFF]">
             *
           </span>
-          <span>{item}</span>
+          <span className="leading-6">{item}</span>
         </li>
       ))}
     </ul>
@@ -93,6 +113,190 @@ function PlainTextList({ items }: { items: readonly string[] }) {
   );
 }
 
+function MarkdownText({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
+function parseOverviewMarkdown(markdown: string): MarkdownSection[] {
+  const sections: MarkdownSection[] = [];
+  const lines = markdown.split(/\r?\n/);
+  let currentSection: MarkdownSection | null = null;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+
+    if (!line) continue;
+
+    if (line.startsWith("## ")) {
+      currentSection = {
+        title: line.slice(3),
+        blocks: [],
+      };
+      sections.push(currentSection);
+      continue;
+    }
+
+    if (!currentSection) continue;
+
+    if (line.startsWith("### ")) {
+      currentSection.blocks.push({
+        type: "heading",
+        text: line.slice(4),
+      });
+      continue;
+    }
+
+    if (line.startsWith("* ")) {
+      const items = [line.slice(2)];
+
+      while (lines[index + 1]?.trim().startsWith("* ")) {
+        index += 1;
+        items.push(lines[index].trim().slice(2));
+      }
+
+      currentSection.blocks.push({
+        type: "unorderedList",
+        items,
+      });
+      continue;
+    }
+
+    if (/^\d+\.\s/.test(line)) {
+      const items = [line.replace(/^\d+\.\s/, "")];
+
+      while (/^\d+\.\s/.test(lines[index + 1]?.trim() ?? "")) {
+        index += 1;
+        items.push(lines[index].trim().replace(/^\d+\.\s/, ""));
+      }
+
+      currentSection.blocks.push({
+        type: "orderedList",
+        items,
+      });
+      continue;
+    }
+
+    currentSection.blocks.push({
+      type: "paragraph",
+      text: line,
+    });
+  }
+
+  return sections;
+}
+
+function MarkdownSectionContent({ blocks }: { blocks: MarkdownBlock[] }) {
+  return (
+    <div className="space-y-3">
+      {blocks.map((block, index) => {
+        if (block.type === "heading") {
+          return (
+            <h3
+              key={`${block.text}-${index}`}
+              className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.02em] text-[#081A3A]"
+            >
+              {block.text}
+            </h3>
+          );
+        }
+
+        if (block.type === "orderedList") {
+          return (
+            <ol
+              key={`${block.type}-${index}`}
+              className="list-decimal space-y-1.5 pl-5"
+            >
+              {block.items.map((item) => (
+                <li key={item} className="leading-6">
+                  <MarkdownText text={item} />
+                </li>
+              ))}
+            </ol>
+          );
+        }
+
+        if (block.type === "unorderedList") {
+          return (
+            <ul
+              key={`${block.type}-${index}`}
+              className="list-disc space-y-1.5 pl-5"
+            >
+              {block.items.map((item) => (
+                <li key={item} className="leading-6">
+                  <MarkdownText text={item} />
+                </li>
+              ))}
+            </ul>
+          );
+        }
+
+        if (block.type === "paragraph") {
+          return (
+            <p key={`${block.text}-${index}`}>
+              <MarkdownText text={block.text} />
+            </p>
+          );
+        }
+
+        return null;
+      })}
+    </div>
+  );
+}
+
+function splitMarkdownSections(sections: MarkdownSection[]) {
+  const overviewTitles = new Set(["The Problem", "The Opportunity"]);
+
+  return {
+    overview: sections.filter((section) => overviewTitles.has(section.title)),
+    application: sections.filter(
+      (section) => !overviewTitles.has(section.title),
+    ),
+  };
+}
+
+function OverviewSectionContent({
+  paragraphs,
+  items,
+  subsections,
+}: {
+  paragraphs?: readonly string[];
+  items?: readonly string[];
+  subsections?: NonNullable<
+    NonNullable<ChallengePhChallenge["overviewSections"]>[number]["subsections"]
+  >;
+}) {
+  return (
+    <div className="space-y-3">
+      {paragraphs?.length ? <PlainTextList items={paragraphs} /> : null}
+      {items?.length ? <AsteriskList items={items} /> : null}
+      {subsections?.map((subsection) => (
+        <div key={subsection.title} className="space-y-3 pt-2">
+          <h3 className="[font-family:var(--font-challenge-ph-heading)] text-lg font-black tracking-[-0.03em] text-[#081A3A]">
+            {subsection.title}
+          </h3>
+          <OverviewSectionContent
+            paragraphs={subsection.paragraphs}
+            items={subsection.items}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Timeline({ challenge }: { challenge: ChallengePhChallenge }) {
   return (
     <div className="space-y-3">
@@ -101,12 +305,40 @@ function Timeline({ challenge }: { challenge: ChallengePhChallenge }) {
           key={item.label}
           className="flex flex-col gap-1 border-l-2 border-[#dbe6f5] pl-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
         >
-          <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#28466f]/58 sm:min-w-36">
+          <p className="[font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#28466f]/58 sm:min-w-40">
             {item.label}
           </p>
           <p className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.03em] text-[#081A3A] sm:flex-1">
             {item.detail}
           </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function WinningCriteriaTable({
+  criteria,
+}: {
+  criteria: NonNullable<ChallengePhChallenge["winningCriteria"]>;
+}) {
+  return (
+    <div className="overflow-hidden rounded-[0.33em] border border-[#dbe6f5]">
+      <div className="grid grid-cols-[1fr_4.5rem_1.4fr] bg-[#f7fbff] px-4 py-3 [font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-[#5E7392]">
+        <span>Criteria</span>
+        <span className="text-right">Weight</span>
+        <span className="pl-4">What we're looking for</span>
+      </div>
+      {criteria.map((item) => (
+        <div
+          key={item.criteria}
+          className="grid grid-cols-[1fr_4.5rem_1.4fr] border-t border-[#e8eef6] px-4 py-3 text-sm font-semibold leading-6 text-[#28466f]"
+        >
+          <span className="text-[#081A3A]">{item.criteria}</span>
+          <span className="text-right [font-family:var(--font-challenge-ph-heading)] font-black text-[#B77900]">
+            {item.weight}
+          </span>
+          <span className="pl-4">{item.description}</span>
         </div>
       ))}
     </div>
@@ -205,45 +437,149 @@ function getLeaderboardEntries(
   }));
 }
 
-function OverviewTab({ challenge }: { challenge: ChallengePhChallenge }) {
+function OverviewTab({
+  challenge,
+  onGoToApplication,
+}: {
+  challenge: ChallengePhChallenge;
+  onGoToApplication: () => void;
+}) {
+  const markdownSections = challenge.overviewMarkdown
+    ? parseOverviewMarkdown(challenge.overviewMarkdown)
+    : null;
+  const markdownSplit = markdownSections
+    ? splitMarkdownSections(markdownSections)
+    : null;
+  const overviewSections = challenge.overviewSections ?? [
+    {
+      title: "What needs solving",
+      paragraphs: [challenge.problem, challenge.whyItMatters],
+    },
+  ];
+
   return (
     <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white p-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
-      <ToggleSection
-        title="What needs solving"
-        withDivider={false}
-      >
-        <PlainTextList items={[challenge.problem, challenge.whyItMatters]} />
-      </ToggleSection>
-
-      <ToggleSection title="Your task">
-        <AsteriskList items={challenge.brief} />
-      </ToggleSection>
-
-      <ToggleSection title="What to submit">
-        <AsteriskList items={challenge.deliverables} />
-      </ToggleSection>
-
-      <ToggleSection title="Who can join">
-        <AsteriskList items={challenge.eligibility} />
-      </ToggleSection>
+      {markdownSplit
+        ? markdownSplit.overview.map((section, index) => (
+            <ToggleSection
+              key={section.title}
+              title={section.title}
+              withDivider={index > 0}
+            >
+              <MarkdownSectionContent blocks={section.blocks} />
+            </ToggleSection>
+          ))
+        : overviewSections.map((section, index) => (
+            <ToggleSection
+              key={section.title}
+              title={section.title}
+              withDivider={index > 0}
+            >
+              <OverviewSectionContent
+                paragraphs={section.paragraphs}
+                items={section.items}
+                subsections={section.subsections}
+              />
+            </ToggleSection>
+          ))}
 
       <ToggleSection title="Important dates">
         <Timeline challenge={challenge} />
       </ToggleSection>
 
       <section className="rounded-[0.33em] border border-[#B77900]/30 bg-[#fff7df] p-5">
-        <div className="max-w-xl space-y-2">
-          <div className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-[#B77900]" />
-            <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.035em] text-[#081A3A]">
-              Ready to submit your approach?
-            </h2>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-xl space-y-2">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-[#B77900]" />
+              <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.035em] text-[#081A3A]">
+                {challenge.submissionCalloutTitle ??
+                  "Ready to submit your approach?"}
+              </h2>
+            </div>
           </div>
-          <p className="text-sm font-semibold leading-6 text-[#28466f]">
-            Prepare a clear solution overview, show how the workflow would
-            operate in practice, and explain what {challenge.host} would need to
-            pilot or adopt it.
-          </p>
+          <button
+            type="button"
+            onClick={onGoToApplication}
+            className="inline-flex h-11 items-center justify-center rounded-[0.33em] px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold text-white shadow-[0_18px_46px_-32px_rgba(8,26,58,0.7)] transition-colors"
+            style={{ backgroundColor: challenge.accent }}
+          >
+            Go to application
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ApplicationTab({ challenge }: { challenge: ChallengePhChallenge }) {
+  const markdownSections = challenge.overviewMarkdown
+    ? parseOverviewMarkdown(challenge.overviewMarkdown)
+    : null;
+  const markdownSplit = markdownSections
+    ? splitMarkdownSections(markdownSections)
+    : null;
+  const applicationSections = challenge.overviewSections ?? [
+    {
+      title: "Your task",
+      items: challenge.brief,
+    },
+    {
+      title: "What to submit",
+      items: challenge.deliverables,
+    },
+  ];
+
+  return (
+    <div className="space-y-5 rounded-[0.33em] border border-[#dbe6f5] bg-white p-5 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)] sm:p-6">
+      {markdownSplit
+        ? markdownSplit.application.map((section, index) => (
+            <ToggleSection
+              key={section.title}
+              title={section.title}
+              withDivider={index > 0}
+            >
+              <MarkdownSectionContent blocks={section.blocks} />
+            </ToggleSection>
+          ))
+        : applicationSections.map((section, index) => (
+            <ToggleSection
+              key={section.title}
+              title={section.title}
+              withDivider={index > 0}
+            >
+              <OverviewSectionContent
+                paragraphs={section.paragraphs}
+                items={section.items}
+                subsections={section.subsections}
+              />
+            </ToggleSection>
+          ))}
+
+      {challenge.winningCriteria ? (
+        <ToggleSection title="Winning Criteria" withDivider>
+          <WinningCriteriaTable criteria={challenge.winningCriteria} />
+        </ToggleSection>
+      ) : null}
+
+      <section className="rounded-[0.33em] border border-[#B77900]/30 bg-[#fff7df] p-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-xl space-y-2">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-[#B77900]" />
+              <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.035em] text-[#081A3A]">
+                {challenge.submissionCalloutTitle ??
+                  "Ready to submit your approach?"}
+              </h2>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="inline-flex h-11 items-center justify-center rounded-[0.33em] px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold text-white shadow-[0_18px_46px_-32px_rgba(8,26,58,0.7)] transition-colors"
+            style={{ backgroundColor: challenge.accent }}
+          >
+            Submit entry
+          </button>
         </div>
       </section>
     </div>
@@ -253,8 +589,8 @@ function OverviewTab({ challenge }: { challenge: ChallengePhChallenge }) {
 function FaqTab({ challenge }: { challenge: ChallengePhChallenge }) {
   const faqItems = [
     {
-      question: "How strong submissions stand out",
-      answer: challenge.judgingCriteria,
+      question: "Who can join?",
+      answer: challenge.eligibility,
     },
     {
       question: "Do I need a working app to submit?",
@@ -317,7 +653,12 @@ function FaqItem({
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <section className={cn("px-5 py-4 sm:px-6", withDivider && "border-t border-[#dbe6f5]")}>
+    <section
+      className={cn(
+        "px-5 py-4 sm:px-6",
+        withDivider && "border-t border-[#dbe6f5]",
+      )}
+    >
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
@@ -357,8 +698,7 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
   const getLiveEntries = (currentTick: number) =>
     getLeaderboardEntries(challenge)
       .map((entry, index) => {
-        const pulse =
-          ((currentTick + index * 3 + challenge.id.length) % 9) - 3;
+        const pulse = ((currentTick + index * 3 + challenge.id.length) % 9) - 3;
         const score = Math.max(68, Math.min(99, entry.score + pulse));
 
         return {
@@ -385,7 +725,10 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
     previousEntries.map((entry) => [entry.teamName, entry.rank]),
   );
   const entries = getLiveEntries(tick).map((entry) => {
-    const previousRank = tick === 0 ? entry.rank : previousRanks.get(entry.teamName) ?? entry.rank;
+    const previousRank =
+      tick === 0
+        ? entry.rank
+        : (previousRanks.get(entry.teamName) ?? entry.rank);
     const moveDelta = previousRank - entry.rank;
 
     return {
@@ -586,6 +929,11 @@ export function ChallengeTabs({
       icon: Sparkles,
     },
     {
+      id: "application" as const,
+      label: "Application",
+      icon: Target,
+    },
+    {
       id: "leaderboard" as const,
       label: "Leaderboard",
       icon: Trophy,
@@ -638,7 +986,12 @@ export function ChallengeTabs({
       </div>
 
       {activeTab === "overview" ? (
-        <OverviewTab challenge={challenge} />
+        <OverviewTab
+          challenge={challenge}
+          onGoToApplication={() => setActiveTab("application")}
+        />
+      ) : activeTab === "application" ? (
+        <ApplicationTab challenge={challenge} />
       ) : activeTab === "faq" ? (
         <FaqTab challenge={challenge} />
       ) : (

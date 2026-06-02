@@ -5,16 +5,12 @@ import { notFound } from "next/navigation";
 import { JetBrains_Mono, Open_Sans, Space_Grotesk } from "next/font/google";
 import {
   ArrowLeft,
-  Building2,
   CalendarDays,
-  Clock3,
   MapPin,
   Sparkles,
-  Trophy,
 } from "lucide-react";
 
 import { ChallengeTabs } from "@/components/features/challenge/challenge-tabs";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
   challengePhChallenges,
@@ -74,12 +70,6 @@ export async function generateMetadata({
 function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
   const details = [
     {
-      icon: Trophy,
-      label: "Reward",
-      value: challenge.reward,
-      emphasized: true,
-    },
-    {
       icon: Sparkles,
       label: "Bounty type",
       value: challenge.rewardType,
@@ -94,22 +84,12 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
       label: "Location",
       value: challenge.location,
     },
-    {
-      icon: Clock3,
-      label: "Difficulty",
-      value: challenge.difficulty,
-    },
-    {
-      icon: Building2,
-      label: "Sector",
-      value: challenge.sector,
-    },
   ];
 
   return (
-    <aside className="space-y-4">
-      <Card className="rounded-[0.33em] border-[#dbe6f5] bg-white p-4 shadow-[0_24px_70px_-60px_rgba(8,26,58,0.72)]">
-        <p className="[font-family:var(--font-challenge-ph-mono)] text-xs font-semibold uppercase tracking-[0.14em] text-[#28466f]/62">
+    <aside className="space-y-8">
+      <section>
+        <p className="[font-family:var(--font-challenge-ph-mono)] text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
           Posted by
         </p>
         <div className="mt-4 space-y-4">
@@ -122,37 +102,23 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
               className="h-auto max-h-8 w-auto max-w-full object-contain"
             />
           ) : null}
-          <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.04em] text-[#081A3A]">
+          <h2 className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black leading-tight tracking-[-0.04em] text-white">
             {challenge.host}
           </h2>
         </div>
-      </Card>
+      </section>
 
-      <Card className="rounded-[0.33em] border-[#dbe6f5] bg-white p-4 shadow-[0_24px_70px_-60px_rgba(8,26,58,0.72)]">
+      <section>
         <div className="space-y-4">
           {details.map((detail) => {
-            const Icon = detail.icon;
-
             return (
               <div key={detail.label} className="flex items-start gap-3">
-                <div
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] bg-[#eef7ff]"
-                  style={{
-                    color: detail.emphasized ? challenge.accent : "#0D6BFF",
-                  }}
-                >
-                  <Icon className="h-4 w-4" />
-                </div>
                 <div className="min-w-0">
-                  <p className="[font-family:var(--font-challenge-ph-mono)] text-xs uppercase text-[#28466f]/58">
+                  <p className="[font-family:var(--font-challenge-ph-mono)] text-xs uppercase text-white/55">
                     {detail.label}
                   </p>
                   <p
-                    className={cn(
-                      "[font-family:var(--font-challenge-ph-body)] text-sm font-semibold text-[#081A3A]",
-                      detail.emphasized && "text-base",
-                    )}
-                    style={detail.emphasized ? { color: challenge.accent } : {}}
+                    className="[font-family:var(--font-challenge-ph-body)] text-sm font-semibold text-white"
                   >
                     {detail.value}
                   </p>
@@ -161,7 +127,7 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
             );
           })}
         </div>
-      </Card>
+      </section>
     </aside>
   );
 }
@@ -249,9 +215,9 @@ export default async function ChallengePage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[linear-gradient(to_bottom,#001138_0rem,#001138_8rem,#10284b_16rem,#eef7ff_30rem,#f7fbff_40rem,#ffffff_100%)] px-5 py-8 sm:px-8 sm:py-12">
+      <section className="relative overflow-hidden bg-[linear-gradient(to_bottom,#001138_0rem,#001138_8rem,#071a36_18rem,#071a36_100%)] px-5 py-8 sm:px-8 sm:py-12">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(13,107,255,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(13,107,255,0.045)_1px,transparent_1px)] bg-[size:44px_44px] opacity-55 [mask-image:linear-gradient(to_bottom,transparent_0rem,transparent_16rem,#000_28rem)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20rem,rgba(13,107,255,0.1),transparent_18rem),radial-gradient(circle_at_30%_86%,rgba(13,107,255,0.08),transparent_28%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20rem,rgba(13,107,255,0.12),transparent_18rem),radial-gradient(circle_at_30%_86%,rgba(13,107,255,0.1),transparent_28%),radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.1),transparent_20rem),radial-gradient(circle_at_82%_36%,rgba(255,255,255,0.08),transparent_18rem),radial-gradient(circle_at_62%_78%,rgba(140,211,255,0.08),transparent_22rem)]" />
         <div className="relative mx-auto grid max-w-6xl items-start gap-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10">
           <div className="self-start lg:pt-[3.75rem]">
             <DetailRail challenge={challenge} />

@@ -23,6 +23,23 @@ export type ChallengePhChallenge = {
   tags: string[];
   accent: string;
   logo?: string;
+  overviewSections?: Array<{
+    title: string;
+    paragraphs?: string[];
+    items?: string[];
+    subsections?: Array<{
+      title: string;
+      paragraphs?: string[];
+      items?: string[];
+    }>;
+  }>;
+  overviewMarkdown?: string;
+  winningCriteria?: Array<{
+    criteria: string;
+    weight: string;
+    description: string;
+  }>;
+  submissionCalloutTitle?: string;
 };
 
 export const challengePhChallenges: ChallengePhChallenge[] = [
@@ -32,21 +49,22 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     sector: "Service operations and customer experience",
     title: "Beyond the Spreadsheet: Reimagining how Browhaus handles bookings",
     shortTitle: "Beyond the Spreadsheet",
-    reward: "TBD",
-    rewardType: "Browhaus operations challenge",
-    deadline: "TBD",
+    reward: "PHP30,000 prize pool + bring your solution to life",
+    rewardType: "Prize pool plus Browhaus pilot opportunity",
+    deadline: "July 18, 2026",
     location: "Philippines",
     difficulty: "Intermediate",
     summary:
-      "Design a smarter booking operations system that helps Browhaus manage appointments more efficiently and reduce scheduling friction.",
+      "Redesign how Browhaus manages bookings behind the scenes so teams can work with more clarity, less friction, and greater care.",
     problem:
-      "Browhaus currently manages daily bookings through Google Sheets. While the setup is familiar and flexible, it becomes harder to maintain as appointments grow, coordination increases, and the risk of human error rises.",
+      "Every growing business eventually reaches the same moment: the tools that once helped them move fast begin to hold them back. For Browhaus, that moment is happening in booking operations. Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence. What used to be a simple spreadsheet is now part of a larger customer experience.",
     whyItMatters:
-      "Operational friction behind the scenes directly shapes customer experience. Missed appointments, delayed responses, and clunky scheduling processes can turn small internal issues into visible service problems as a business scales.",
+      "This challenge asks you to redesign how Browhaus manages bookings behind the scenes. A better system could help staff spend less time searching, updating, and coordinating, and more time serving customers well. The goal is not just to organize appointments. The goal is to design an operational experience that helps a growing service business work with more clarity, less friction, and greater care.",
     brief: [
-      "Create a better booking operations system for Browhaus that helps staff stay organized and work faster.",
-      "Your concept can be an internal dashboard, automation layer, AI-assisted scheduling tool, redesigned workflow, or another practical operations approach.",
-      "Focus on solutions that feel thoughtful, intuitive, and genuinely useful in a real service business environment.",
+      "Map the current booking flow: customer inquiry or booking request, manual appointment encoding, schedule confirmation, appointment updates or reschedules, customer arrival and status tracking, and end-of-day review.",
+      "Identify where friction happens and propose a better way for the workflow to operate.",
+      "Consider multiple staff members interacting with bookings, real-time updates throughout the day, ease of onboarding for non-technical users, operational reliability, customer privacy, and future scalability.",
+      "Solutions do not need to be fully engineered products. Prototypes, workflow redesigns, service blueprints, automation concepts, or MVPs are welcome.",
     ],
     eligibility: [
       "Open to students and early-career builders.",
@@ -54,26 +72,131 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "Specific eligibility requirements are to be announced by Browhaus.",
     ],
     deliverables: [
-      "Solution overview.",
-      "Product mockups or prototypes.",
-      "Workflow explanations.",
+      "A clear explanation of the problem being solved.",
+      "Proposed workflow improvements.",
+      "Mockups, wireframes, or prototypes.",
       "Implementation considerations.",
-      "Optional demo or MVP.",
+      "Optional demos or MVPs.",
+      "A clear explanation of who uses the system, how it fits into daily operations, and why it improves the current workflow.",
     ],
     timeline: [
-      { label: "Brief opens", detail: "TBD" },
-      { label: "Submission deadline", detail: "TBD" },
-      { label: "Review period", detail: "TBD" },
+      { label: "Brief opens", detail: "June 6, 2026" },
+      { label: "Submission deadline", detail: "July 18, 2026" },
+      { label: "Review period", detail: "July 21-25, 2026" },
+      { label: "Winner announcement", detail: "July 30, 2026" },
     ],
     judgingCriteria: [
-      "Intuitiveness for day-to-day team use.",
-      "Scalability as booking volume grows.",
-      "Ease of adoption for Browhaus staff.",
-      "Fit with real operational needs and customer experience goals.",
+      "Operational Impact, 25%: Reduces manual work, improves coordination, and solves real workflow problems.",
+      "Ease of Use, 20%: Clear, intuitive experience for day-to-day staff use.",
+      "Feasibility, 20%: Realistic to pilot and implement in a service business environment.",
+      "Scalability, 15%: Able to support growing booking volume and operational complexity.",
+      "Customer Experience, 10%: Improves speed, clarity, reliability, or overall service experience.",
+      "Quality of Thinking, 10%: Thoughtful understanding of the workflow, users, and operational needs.",
     ],
     tags: ["Operations", "Booking", "Customer experience"],
     accent: "#B77900",
     logo: "/images/companies/browhaus_logo.png",
+    overviewMarkdown: `## The Problem
+
+Every growing business eventually reaches the same moment: the tools that once helped them move fast begin to hold them back.
+
+For Browhaus, that moment is happening in booking operations.
+
+Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence.
+
+What used to be a simple spreadsheet is now part of a larger customer experience.
+
+## The Opportunity
+
+This challenge asks **YOU** to redesign how Browhaus manages bookings behind the scenes.
+
+A better system could help staff spend less time searching, updating, and coordinating — and more time serving customers well.
+
+The goal is not just to organize appointments.
+
+The goal is to design an operational experience that helps a growing service business work with more clarity, less friction, and greater care.
+
+### Current Workflow
+
+A typical booking flow may involve:
+
+1. customer inquiry or booking request,
+2. manual appointment encoding,
+3. schedule confirmation,
+4. appointment updates or reschedules,
+5. customer arrival and status tracking,
+6. end-of-day review.
+
+Participants should identify where friction happens and propose a better way for the workflow to operate.
+
+## Submission Requirements
+
+### 1. Booking Operations Proposal
+
+Submit a slide deck or presentation that explains how you would improve Browhaus' booking workflow.
+
+Your proposal should include:
+
+* the booking problem or friction point you are solving,
+* your proposed system, workflow, dashboard, automation, or prototype,
+* the users involved, such as staff, managers, or customers,
+* how bookings would be created, updated, confirmed, rescheduled, and tracked,
+* sample screens, workflow diagrams, service blueprints, or prototypes,
+* and what Browhaus would need to test or adopt your solution.
+
+Make sure your presentation is accessible through the link you provide.
+
+### 2. 3-5 Minute Video Pitch
+
+Submit a short video walking through your solution.
+
+Your video should:
+
+* introduce yourself or your team,
+* explain the booking friction you identified,
+* show how your proposed workflow works,
+* highlight how it improves speed, clarity, accuracy, or customer experience,
+* and explain why it is realistic for Browhaus to pilot.
+
+Upload the video as an unlisted YouTube link.`,
+    winningCriteria: [
+      {
+        criteria: "Operational Impact",
+        weight: "25%",
+        description:
+          "Reduces manual work, improves coordination, and solves real workflow problems.",
+      },
+      {
+        criteria: "Ease of Use",
+        weight: "20%",
+        description: "Clear, intuitive experience for day-to-day staff use.",
+      },
+      {
+        criteria: "Feasibility",
+        weight: "20%",
+        description:
+          "Realistic to pilot and implement in a service business environment.",
+      },
+      {
+        criteria: "Scalability",
+        weight: "15%",
+        description:
+          "Able to support growing booking volume and operational complexity.",
+      },
+      {
+        criteria: "Customer Experience",
+        weight: "10%",
+        description:
+          "Improves speed, clarity, reliability, or overall service experience.",
+      },
+      {
+        criteria: "Quality of Thinking",
+        weight: "10%",
+        description:
+          "Thoughtful understanding of the workflow, users, and operational needs.",
+      },
+    ],
+    submissionCalloutTitle: "Ready to reimagine booking operations?",
   },
   {
     id: "flood-ready-commutes",
