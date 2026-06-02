@@ -131,20 +131,21 @@ Participants should identify where friction happens and propose a better way for
 
 ## Submission Requirements
 
-### 1. Booking Operations Proposal
+### 1. Deployed Website or Prototype
 
-Submit a slide deck or presentation that explains how you would improve Browhaus' booking workflow.
+Submit a working link to your proposed booking operations experience.
 
-Your proposal should include:
+This can be a deployed website, clickable prototype, no-code build, dashboard mockup, or product flow.
 
-* the booking problem or friction point you are solving,
-* your proposed system, workflow, dashboard, automation, or prototype,
-* the users involved, such as staff, managers, or customers,
-* how bookings would be created, updated, confirmed, rescheduled, and tracked,
-* sample screens, workflow diagrams, service blueprints, or prototypes,
-* and what Browhaus would need to test or adopt your solution.
+Your submission should:
 
-Make sure your presentation is accessible through the link you provide.
+- show the booking operations experience clearly,
+- include a logical flow for staff managing bookings,
+- show how appointments are created, updated, confirmed, rescheduled, or tracked,
+- demonstrate how the solution reduces friction in the current workflow,
+- and be accessible through the link you provide.
+
+It does not need to be fully functional, as long as the experience and logic are clear.
 
 ### 2. 3-5 Minute Video Pitch
 
