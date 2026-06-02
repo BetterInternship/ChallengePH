@@ -159,16 +159,8 @@ export default async function ChallengePage({ params }: PageProps) {
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div className="inline-flex items-center gap-2">
-            <Image
-              src="/BetterInternshipLogo.png"
-              alt="BetterInternship logo"
-              width={32}
-              height={32}
-              className="h-6 w-6"
-              priority
-            />
             <span className="[font-family:var(--font-challenge-ph-heading)] font-bold text-white">
-              Challenge PH
+              Got a problem? Just ChallengePH
             </span>
           </div>
         </div>
