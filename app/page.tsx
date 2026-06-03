@@ -143,7 +143,14 @@ function MissionPipeline() {
             alt="ChallengePH mission pipeline"
             width={1440}
             height={960}
-            className="h-auto w-full"
+            className="hidden h-auto w-full sm:block"
+          />
+          <Image
+            src="/super-listings/pic1_mobile.png"
+            alt="ChallengePH mission pipeline"
+            width={720}
+            height={960}
+            className="h-auto w-full sm:hidden"
           />
         </div>
       </div>
