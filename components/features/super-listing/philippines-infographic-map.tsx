@@ -395,6 +395,17 @@ function getLineStart(anchor: Point, tooltipPosition: TooltipPosition) {
   };
 }
 
+function getSideLineStart(anchor: Point, tooltipPosition: TooltipPosition) {
+  const width = tooltipPosition.width ?? 236;
+  const height = tooltipPosition.height ?? 126;
+  const cardIsRightOfAnchor = tooltipPosition.x >= anchor.x;
+
+  return {
+    x: cardIsRightOfAnchor ? tooltipPosition.x : tooltipPosition.x + width,
+    y: tooltipPosition.y + height * 0.5,
+  };
+}
+
 function SignalTrace({
   callout,
   layoutName,
@@ -403,14 +414,15 @@ function SignalTrace({
   layoutName: LayoutName;
 }) {
   const { anchor, tooltipPosition } = getCalloutGeometry(callout, layoutName);
-  const end = getLineStart(anchor, tooltipPosition);
-  const direction = end.x < anchor.x ? -1 : 1;
-  const bendX = anchor.x + direction * 84;
-  const bendY = Math.min(anchor.y - 48, end.y);
+  const end =
+    layoutName === "mobile"
+      ? getLineStart(anchor, tooltipPosition)
+      : getSideLineStart(anchor, tooltipPosition);
+  const bendX = anchor.x + (end.x - anchor.x) * 0.55;
   const path =
     layoutName === "mobile"
       ? `M ${anchor.x} ${anchor.y} L ${end.x} ${end.y}`
-      : `M ${anchor.x} ${anchor.y} L ${bendX} ${bendY} H ${end.x}`;
+      : `M ${anchor.x} ${anchor.y} H ${bendX} V ${end.y} H ${end.x}`;
 
   return (
     <g aria-hidden="true">
@@ -763,27 +775,32 @@ function PhilippinesMap({
         : activeCallout.resolvedAnchor;
     const cardWidth = layoutName === "mobile" ? 152 : 252;
     const cardHeight = layoutName === "mobile" ? 92 : 140;
-    const margin = layoutName === "mobile" ? 10 : 18;
-    const gap = layoutName === "mobile" ? 28 : 86;
+    const minX = layoutName === "mobile" ? 10 : 160;
+    const maxX =
+      layout.width - cardWidth - (layoutName === "mobile" ? 10 : 18);
+    const marginY = layoutName === "mobile" ? 10 : 18;
+    const gap = layoutName === "mobile" ? 12 : 42;
     const shouldPlaceRight = anchor.x < layout.width / 2;
     const rightX = anchor.x + gap;
     const leftX = anchor.x - cardWidth - gap;
-    const preferredX = shouldPlaceRight ? rightX : leftX;
-    const fallbackX = shouldPlaceRight ? leftX : rightX;
-    const fitsPreferred =
-      preferredX >= margin && preferredX + cardWidth <= layout.width - margin;
-    const newX = Math.max(
-      margin,
-      Math.min(
-        fitsPreferred ? preferredX : fallbackX,
-        layout.width - cardWidth - margin,
-      ),
-    );
+    const canPlaceRight = rightX <= maxX;
+    const canPlaceLeft = leftX >= minX;
+    const newX = (() => {
+      if (shouldPlaceRight) {
+        if (canPlaceRight) return rightX;
+        if (canPlaceLeft) return leftX;
+        return Math.max(minX, Math.min(rightX, maxX));
+      }
+
+      if (canPlaceLeft) return leftX;
+      if (canPlaceRight) return rightX;
+      return Math.max(minX, Math.min(leftX, maxX));
+    })();
     const newY = Math.max(
-      margin,
+      marginY,
       Math.min(
-        anchor.y - cardHeight * 0.76,
-        layout.height - cardHeight - margin,
+        anchor.y - cardHeight * (layoutName === "mobile" ? 0.52 : 0.76),
+        layout.height - cardHeight - marginY,
       ),
     );
     if (layoutName === "mobile") {
