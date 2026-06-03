@@ -1011,10 +1011,10 @@ export function ChallengeTabs({
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "inline-flex h-11 items-center gap-2 rounded-[0.33em] px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold transition-colors",
+                  "inline-flex h-11 items-center gap-2 rounded-[0.33em] border bg-transparent px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold transition-colors",
                   isActive
-                    ? "text-white shadow-[0_18px_46px_-32px_rgba(8,26,58,0.7)]"
-                    : "text-white hover:bg-white/10 hover:text-white",
+                    ? "border-transparent text-white shadow-[0_18px_46px_-32px_rgba(8,26,58,0.7)]"
+                    : "border-white/25 text-white hover:border-white/45 hover:bg-white/10 hover:text-white",
                 )}
                 style={
                   isActive
