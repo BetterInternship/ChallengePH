@@ -3,12 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JetBrains_Mono, Open_Sans, Space_Grotesk } from "next/font/google";
-import {
-  ArrowLeft,
-  CalendarDays,
-  MapPin,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, CalendarDays, MapPin, Sparkles } from "lucide-react";
 
 import { ChallengeTabs } from "@/components/features/challenge/challenge-tabs";
 import { cn } from "@/lib/utils";
@@ -117,9 +112,7 @@ function DetailRail({ challenge }: { challenge: ChallengePhChallenge }) {
                   <p className="[font-family:var(--font-challenge-ph-mono)] text-xs uppercase text-white/55">
                     {detail.label}
                   </p>
-                  <p
-                    className="[font-family:var(--font-challenge-ph-body)] text-sm font-semibold text-white"
-                  >
+                  <p className="[font-family:var(--font-challenge-ph-body)] text-sm font-semibold text-white">
                     {detail.value}
                   </p>
                 </div>
@@ -150,7 +143,7 @@ export default async function ChallengePage({ params }: PageProps) {
       )}
     >
       <header className="absolute left-0 right-0 top-0 z-50 border-b border-transparent bg-transparent px-5 py-3 shadow-none sm:px-8">
-        <div className="relative mx-auto flex h-9 max-w-6xl items-center justify-center">
+        <div className="relative mx-auto flex h-9 max-w-6xl justify-start">
           <Link
             href="/search"
             className="absolute left-0 inline-flex h-9 w-9 items-center justify-center rounded-[0.33em] text-white/65 transition-colors duration-200 hover:bg-white/10 hover:text-white"
@@ -158,11 +151,6 @@ export default async function ChallengePage({ params }: PageProps) {
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
-          <div className="inline-flex items-center gap-2">
-            <span className="[font-family:var(--font-challenge-ph-heading)] font-bold text-white">
-              Got a problem? Just ChallengePH
-            </span>
-          </div>
         </div>
       </header>
 

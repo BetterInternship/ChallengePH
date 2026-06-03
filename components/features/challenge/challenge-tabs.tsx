@@ -117,19 +117,26 @@ function PlainTextList({ items }: { items: readonly string[] }) {
 
 function SuccessMetricsList({ items }: { items: readonly string[] }) {
   return (
-    <div className="space-y-3">
+    <dl className="divide-y divide-[#e8eef6] rounded-[0.33em] border border-[#dbe6f5]">
       {items.map((item) => {
         const [label, ...rest] = item.split(": ");
         const description = rest.join(": ");
 
         return (
-          <div key={item} className="leading-6 text-[#28466f]">
-            <div className="font-bold text-blue-500">{label}</div>
-            {description ? `${description}` : ""}
+          <div
+            key={item}
+            className="grid gap-1 px-4 py-3 text-sm leading-6"
+          >
+            <dt className="[font-family:var(--font-challenge-ph-heading)] font-black tracking-[-0.02em] text-[#081A3A]">
+              {label}
+            </dt>
+            {description ? (
+              <dd className="text-[#28466f]">{description}</dd>
+            ) : null}
           </div>
         );
       })}
-    </div>
+    </dl>
   );
 }
 
@@ -277,7 +284,7 @@ function MarkdownSectionContent({ blocks }: { blocks: MarkdownBlock[] }) {
 }
 
 function splitMarkdownSections(sections: MarkdownSection[]) {
-  const overviewTitles = new Set(["The Problem", "The Opportunity"]);
+  const overviewTitles = new Set(["The Problem"]);
 
   return {
     overview: sections.filter((section) => overviewTitles.has(section.title)),
@@ -503,6 +510,27 @@ function OverviewTab({
             </ToggleSection>
           ))}
 
+      {challenge.winningCriteria ? (
+        <ToggleSection title="Winning Criteria" withDivider defaultOpen={false}>
+          <WinningCriteriaTable criteria={challenge.winningCriteria} />
+        </ToggleSection>
+      ) : null}
+
+      {challenge.successMetrics?.length ? (
+        <ToggleSection title="Your Objective" withDivider defaultOpen={true}>
+          <div className="space-y-4">
+            {challenge.objective ? (
+              <div>
+                <p className="leading-6 text-[#28466f]">
+                  {challenge.objective}
+                </p>
+              </div>
+            ) : null}
+            <SuccessMetricsList items={challenge.successMetrics} />
+          </div>
+        </ToggleSection>
+      ) : null}
+
       <ToggleSection title="Important dates">
         <Timeline challenge={challenge} />
       </ToggleSection>
@@ -575,29 +603,6 @@ function ApplicationTab({ challenge }: { challenge: ChallengePhChallenge }) {
               />
             </ToggleSection>
           ))}
-
-      {challenge.winningCriteria ? (
-        <ToggleSection title="Winning Criteria" withDivider defaultOpen={false}>
-          <WinningCriteriaTable criteria={challenge.winningCriteria} />
-        </ToggleSection>
-      ) : null}
-
-      {challenge.successMetrics?.length ? (
-        <ToggleSection title="Success Metrics" withDivider defaultOpen={false}>
-          <div className="space-y-4">
-            {challenge.objective ? (
-              <div>
-                <span className="font-bold text-[#B77900]">Objective</span>
-
-                <p className="leading-6 text-[#28466f]">
-                  {challenge.objective}
-                </p>
-              </div>
-            ) : null}
-            <SuccessMetricsList items={challenge.successMetrics} />
-          </div>
-        </ToggleSection>
-      ) : null}
 
       <section className="rounded-[0.33em] border border-[#B77900]/30 bg-[#fff7df] p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
