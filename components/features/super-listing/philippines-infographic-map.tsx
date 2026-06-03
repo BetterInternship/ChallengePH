@@ -416,10 +416,7 @@ function SignalTrace({
   const { anchor, tooltipPosition } = getCalloutGeometry(callout, layoutName);
   const end = getSideLineStart(anchor, tooltipPosition);
   const bendX = anchor.x + (end.x - anchor.x) * 0.55;
-  const path =
-    layoutName === "mobile"
-      ? `M ${anchor.x} ${anchor.y} L ${end.x} ${end.y}`
-      : `M ${anchor.x} ${anchor.y} H ${bendX} V ${end.y} H ${end.x}`;
+  const path = `M ${anchor.x} ${anchor.y} H ${bendX} V ${end.y} H ${end.x}`;
 
   return (
     <g aria-hidden="true">
@@ -429,7 +426,7 @@ function SignalTrace({
         stroke="rgba(255,211,106,0.7)"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.1}
+        strokeWidth={layoutName === "mobile" ? 1.4 : 1.1}
         filter="url(#challengeph-line-glow)"
         opacity={0.22}
       />
@@ -439,7 +436,7 @@ function SignalTrace({
         stroke="#FFD36A"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.75}
+        strokeWidth={layoutName === "mobile" ? 2.25 : 1.75}
         filter="url(#challengeph-line-glow)"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 0.96 }}
@@ -451,7 +448,7 @@ function SignalTrace({
         stroke="#FFF2B8"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={3}
+        strokeWidth={layoutName === "mobile" ? 3.5 : 3}
         strokeDasharray="2 42"
         filter="url(#challengeph-line-glow)"
         initial={{ pathLength: 0, opacity: 0, strokeDashoffset: 0 }}
