@@ -414,10 +414,7 @@ function SignalTrace({
   layoutName: LayoutName;
 }) {
   const { anchor, tooltipPosition } = getCalloutGeometry(callout, layoutName);
-  const end =
-    layoutName === "mobile"
-      ? getLineStart(anchor, tooltipPosition)
-      : getSideLineStart(anchor, tooltipPosition);
+  const end = getSideLineStart(anchor, tooltipPosition);
   const bendX = anchor.x + (end.x - anchor.x) * 0.55;
   const path =
     layoutName === "mobile"
