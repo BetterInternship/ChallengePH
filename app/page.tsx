@@ -47,7 +47,7 @@ function HeroSection() {
   ];
 
   return (
-    <section className="relative isolate flex min-h-screen flex-col overflow-hidden bg-[#031226] pb-44 text-white">
+    <section className="relative isolate flex min-h-screen flex-col overflow-x-hidden bg-[#031226] pb-24 text-white sm:pb-36 lg:pb-44">
       <div className="absolute left-4 top-4 z-30 inline-flex transition-opacity duration-200 hover:opacity-75 sm:left-6 sm:top-6">
         <Image
           src="/BetterInternshipLogo.png"
@@ -93,14 +93,14 @@ function HeroSection() {
               Explore bounties <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-10 max-w-xl overflow-hidden rounded-[0.65rem] border border-white/10 bg-[#061A35]/58 backdrop-blur-md whitespace-nowrap">
-            <div className="grid divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <div className="mt-8 max-w-sm overflow-hidden rounded-[0.65rem] border border-white/10 bg-[#061A35]/58 backdrop-blur-md whitespace-nowrap sm:mt-10 sm:max-w-xl">
+            <div className="grid grid-cols-3 divide-x divide-white/10">
               {socialProofItems.map((item) => (
-                <div key={item.label} className="px-4 py-3.5">
-                  <p className="[font-family:var(--font-challenge-ph-heading)] text-4xl font-bold leading-none tracking-[-0.03em] text-white">
+                <div key={item.label} className="px-2.5 py-2.5 sm:px-4 sm:py-3.5">
+                  <p className="[font-family:var(--font-challenge-ph-heading)] text-xl font-bold leading-none tracking-[-0.03em] text-white sm:text-4xl">
                     {item.value}
                   </p>
-                  <p className="mt-1.5 text-xs font-semibold leading-tight text-[#C5D4EA]">
+                  <p className="mt-1 text-[0.62rem] font-semibold leading-tight text-[#C5D4EA] sm:mt-1.5 sm:text-xs">
                     {item.label}
                   </p>
                 </div>
@@ -115,9 +115,9 @@ function HeroSection() {
         </div>
         <div
           id="problem-map"
-          className="relative mx-auto hidden w-full max-w-[70rem] -translate-y-6 scale-125 lg:block xl:scale-[1.42]"
+          className="relative mx-auto block h-screen min-h-[34rem] w-full max-w-none overflow-visible lg:h-auto lg:max-w-[70rem] lg:-translate-y-6 lg:scale-125 xl:scale-[1.42]"
         >
-          <ChallengePhInteractiveMap />
+          <ChallengePhInteractiveMap className="mx-auto flex h-full scale-150 justify-center lg:block lg:h-auto lg:w-full lg:scale-100" />
         </div>
       </div>
     </section>

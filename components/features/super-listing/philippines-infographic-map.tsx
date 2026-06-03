@@ -497,6 +497,7 @@ function MapTooltip({
         className={cn(
           "group relative flex h-full w-full flex-col items-start overflow-hidden rounded-[0.65rem] border border-[#FFC83D]/50 bg-[linear-gradient(135deg,rgba(27,20,9,0.95),rgba(5,20,46,0.94))] px-4 py-3 text-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_0_24px_rgba(255,200,61,0.18),0_20px_60px_rgba(3,18,38,0.42)] outline-none backdrop-blur-2xl transition-all duration-200 focus-visible:ring-4",
           "hover:-translate-y-0.5 hover:border-[#FFC83D]/75 focus-visible:-translate-y-0.5 focus-visible:ring-[#FFC83D]/25",
+          layoutName === "mobile" && "rounded-[0.5rem] px-3 py-2",
         )}
         onMouseEnter={onActivate}
         onMouseLeave={onDeactivate}
@@ -510,13 +511,28 @@ function MapTooltip({
         aria-label={`${company}: ${title}`}
       >
         <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_12%,rgba(255,200,61,0.16),transparent_34%),linear-gradient(to_bottom,rgba(255,255,255,0.045),transparent_48%)] opacity-95" />
-        <span className="relative line-clamp-2 [font-family:var(--font-challenge-ph-heading)] text-base font-black leading-[1.08] tracking-[-0.035em] text-[#FFF7E8]">
+        <span
+          className={cn(
+            "relative line-clamp-2 [font-family:var(--font-challenge-ph-heading)] font-black leading-[1.08] tracking-[-0.035em] text-[#FFF7E8]",
+            layoutName === "mobile" ? "text-xs" : "text-base",
+          )}
+        >
           {title}
         </span>
-        <span className="relative mt-2 line-clamp-3 text-[0.7rem] font-semibold leading-[1.45] text-[#D8CDB5]">
+        <span
+          className={cn(
+            "relative mt-2 line-clamp-3 font-semibold leading-[1.45] text-[#D8CDB5]",
+            layoutName === "mobile" ? "hidden" : "text-[0.7rem]",
+          )}
+        >
           {summary}
         </span>
-        <span className="relative mt-auto [font-family:var(--font-challenge-ph-heading)] text-lg font-black tracking-[-0.035em] text-[#FFC83D] drop-shadow-[0_0_10px_rgba(255,200,61,0.38)]">
+        <span
+          className={cn(
+            "relative mt-auto [font-family:var(--font-challenge-ph-heading)] font-black tracking-[-0.035em] text-[#FFC83D] drop-shadow-[0_0_10px_rgba(255,200,61,0.38)]",
+            layoutName === "mobile" ? "text-sm" : "text-lg",
+          )}
+        >
           {amount}
         </span>
       </div>
@@ -742,10 +758,10 @@ function PhilippinesMap({
       layoutName === "mobile"
         ? (activeCallout.mobileAnchor ?? activeCallout.resolvedAnchor)
         : activeCallout.resolvedAnchor;
-    const cardWidth = layoutName === "mobile" ? 188 : 252;
-    const cardHeight = layoutName === "mobile" ? 132 : 140;
+    const cardWidth = layoutName === "mobile" ? 152 : 252;
+    const cardHeight = layoutName === "mobile" ? 104 : 140;
     const margin = layoutName === "mobile" ? 12 : 18;
-    const gap = layoutName === "mobile" ? 42 : 86;
+    const gap = layoutName === "mobile" ? 28 : 86;
     const shouldPlaceRight = anchor.x < layout.width / 2;
     const rightX = anchor.x + gap;
     const leftX = anchor.x - cardWidth - gap;
@@ -796,7 +812,7 @@ function PhilippinesMap({
     <svg
       viewBox={`0 0 ${layout.width} ${layout.height}`}
       className={cn(
-        "h-auto w-full",
+        layoutName === "mobile" ? "h-full w-auto" : "h-auto w-full",
         isBackground &&
           "text-[#66c2ff] drop-shadow-[0_0_18px_rgba(102,194,255,0.22)]",
       )}
@@ -1061,10 +1077,20 @@ export function ChallengePhInteractiveMap({
   return (
     <div className={cn("relative w-full", className)}>
       {provinceFeatures.length > 0 ? (
-        <PhilippinesMap
-          provinceFeatures={provinceFeatures}
-          layoutName="desktop"
-        />
+        <>
+          <div className="md:hidden">
+            <PhilippinesMap
+              provinceFeatures={provinceFeatures}
+              layoutName="mobile"
+            />
+          </div>
+          <div className="hidden md:block">
+            <PhilippinesMap
+              provinceFeatures={provinceFeatures}
+              layoutName="desktop"
+            />
+          </div>
+        </>
       ) : null}
     </div>
   );
