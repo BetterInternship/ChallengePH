@@ -405,9 +405,12 @@ function SignalTrace({
   const { anchor, tooltipPosition } = getCalloutGeometry(callout, layoutName);
   const end = getLineStart(anchor, tooltipPosition);
   const direction = end.x < anchor.x ? -1 : 1;
-  const bendX = anchor.x + direction * (layoutName === "mobile" ? 44 : 84);
-  const bendY = Math.min(anchor.y - (layoutName === "mobile" ? 22 : 48), end.y);
-  const path = `M ${anchor.x} ${anchor.y} L ${bendX} ${bendY} H ${end.x}`;
+  const bendX = anchor.x + direction * 84;
+  const bendY = Math.min(anchor.y - 48, end.y);
+  const path =
+    layoutName === "mobile"
+      ? `M ${anchor.x} ${anchor.y} L ${end.x} ${end.y}`
+      : `M ${anchor.x} ${anchor.y} L ${bendX} ${bendY} H ${end.x}`;
 
   return (
     <g aria-hidden="true">
