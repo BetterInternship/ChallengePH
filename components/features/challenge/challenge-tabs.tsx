@@ -1000,7 +1000,7 @@ export function ChallengeTabs({
   return (
     <div className="space-y-4">
       <div>
-        <div className="flex flex-wrap gap-2">
+        <div className="gap-2 grid grid-cols-2 grid-rows-auto-fit sm:flex">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
