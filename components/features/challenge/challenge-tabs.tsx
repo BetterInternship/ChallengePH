@@ -3,7 +3,6 @@
 import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 import {
   ChevronDown,
-  Flame,
   MessageCircleQuestion,
   Radio,
   Sparkles,
@@ -780,131 +779,177 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
       isFresh: entry.updatedAt === "just now",
     };
   });
+  const latestMove = entries
+    .filter((entry) => entry.moveDelta !== 0)
+    .sort(
+      (firstEntry, secondEntry) =>
+        Math.abs(secondEntry.moveDelta) - Math.abs(firstEntry.moveDelta),
+    )[0];
+  const upwardActions = [
+    "surged",
+    "climbed",
+    "jumped",
+    "broke through",
+    "gained ground",
+  ];
+  const downwardActions = [
+    "dropped",
+    "lost ground",
+    "fell back",
+    "gave up position",
+    "slid",
+  ];
+  const steadyMessages = [
+    "The board is steady while teams refine their submissions.",
+    "No rank changes this round, but scores are still live.",
+    "Standings are holding while the next updates come in.",
+  ];
+  const activityMessage = latestMove
+    ? `${latestMove.teamName} ${
+        latestMove.moveDelta > 0
+          ? upwardActions[tick % upwardActions.length]
+          : downwardActions[tick % downwardActions.length]
+      } ${Math.abs(latestMove.moveDelta)} ${
+        Math.abs(latestMove.moveDelta) === 1 ? "spot" : "spots"
+      } to #${latestMove.rank}.`
+    : steadyMessages[tick % steadyMessages.length];
 
   return (
     <>
       <Card className="overflow-hidden rounded-[0.33em] border-[#dbe6f5] bg-white p-0 text-[#081A3A] shadow-[0_24px_78px_-66px_rgba(8,26,58,0.72)]">
         <div className="px-5 py-5 sm:px-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <Radio className="h-6 w-6 text-[#0D6BFF]" />
+                <Radio className="h-5 w-5" style={{ color: challenge.accent }} />
                 <p className="[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]">
-                  Live leaderboard
+                  Live standings
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-3">
-              <p className="rounded-[0.33em] bg-[#f7fbff] px-3 py-2 text-sm font-bold text-[#5E7392]">
+            <div className="flex flex-wrap gap-2 text-sm font-bold text-[#5E7392]">
+              <p>
                 <span className="text-[#081A3A]">{entries.length + 14}</span>{" "}
                 active teams
               </p>
-              <p className="rounded-[0.33em] bg-[#f7fbff] px-3 py-2 text-sm font-bold text-[#5E7392]">
+              <span className="text-[#c9d5e5]">/</span>
+              <p>
                 <span className="text-[#081A3A]">{7 + (tick % 4)}</span> new
                 moves today
               </p>
             </div>
           </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#e8eef6] pt-3 text-sm font-semibold text-[#5E7392]">
+            <span
+              className="[font-family:var(--font-challenge-ph-mono)] text-[0.65rem] font-semibold uppercase tracking-[0.1em] mt-0.5"
+              style={{ color: challenge.accent }}
+            >
+              Recent move
+            </span>
+            <span className="text-[#28466f]">{activityMessage}</span>
+          </div>
         </div>
 
         <div className="border-t border-[#dbe6f5]">
+          <div className="hidden grid-cols-[3.25rem_minmax(0,1fr)_10rem_5rem_5rem] gap-4 bg-[#f7fbff] px-6 py-3 [font-family:var(--font-challenge-ph-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-[#5E7392] sm:grid">
+            <span>Rank</span>
+            <span>Team</span>
+            <span>Stage</span>
+            <span className="text-right">Move</span>
+            <span className="text-right">Score</span>
+          </div>
           {entries.map((entry) => {
+            const isTopThree = entry.rank <= 3;
+
             return (
               <div
                 key={`${entry.teamName}-${tick}`}
                 className={cn(
-                  "leaderboard-row-move grid gap-3 border-b border-[#e8eef6] px-4 py-4 transition-colors last:border-b-0 hover:bg-[#f8fbff] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-6",
+                  "leaderboard-row-move grid gap-3 border-b border-[#e8eef6] px-4 transition-colors last:border-b-0 hover:bg-[#f8fbff] sm:grid-cols-[3.25rem_minmax(0,1fr)_10rem_5rem_5rem] sm:items-center sm:gap-4 sm:px-6",
+                  isTopThree ? "py-5" : "py-3",
                   entry.hasClimbed && "leaderboard-row-climbed",
+                  entry.moveDelta !== 0 && "leaderboard-row-changed",
                 )}
                 style={
                   {
-                    "--leaderboard-move-y": `${entry.moveDelta * 76}px`,
+                    "--leaderboard-move-y": `${entry.moveDelta * 96}px`,
+                    backgroundColor: isTopThree
+                      ? `${challenge.accent}0d`
+                      : undefined,
                   } as CSSProperties
                 }
               >
-                <div className="grid gap-3 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:gap-4">
-                  <div className="flex items-start justify-between gap-3 sm:block">
-                    <div
-                      className={cn(
-                        "flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] text-sm font-black transition-transform sm:h-10 sm:w-10",
-                        entry.hasClimbed && "leaderboard-rank-up",
-                      )}
-                      style={{
-                        backgroundColor:
-                          entry.rank <= 3 ? `${challenge.accent}14` : "#f1f6fc",
-                        color: entry.rank <= 3 ? challenge.accent : "#5E7392",
-                      }}
-                    >
-                      {entry.rank}
-                    </div>
-                    <div className="text-right sm:hidden">
-                      <p
-                        className="[font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
-                        style={{ color: challenge.accent }}
-                      >
-                        {entry.trend}
-                      </p>
-                      <p
-                        className={cn(
-                          "[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]",
-                          entry.moveDelta !== 0 && "leaderboard-score-live",
-                        )}
-                      >
-                        {entry.score}
-                      </p>
-                    </div>
+                <div className="flex items-start justify-between gap-3 sm:block">
+                  <div
+                    className={cn(
+                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.33em] text-sm font-black transition-transform",
+                      entry.hasClimbed && "leaderboard-rank-up",
+                    )}
+                    style={{
+                      backgroundColor:
+                        isTopThree ? challenge.accent : "#f1f6fc",
+                      color: isTopThree ? "#ffffff" : "#5E7392",
+                    }}
+                  >
+                    {entry.rank}
                   </div>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.03em] text-[#081A3A]">
-                        {entry.teamName}
-                      </p>
-                      {entry.rank <= 3 ? (
-                        <span className="inline-flex items-center gap-1 rounded-[0.33em] bg-[#f7fbff] px-2 py-1 [font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#5E7392]">
-                          <Flame className="h-3 w-3 text-[#F59E0B]" />
-                          Trending
-                        </span>
-                      ) : null}
-                      {entry.hasClimbed ? (
-                        <span
-                          className="leaderboard-up-chip rounded-[0.33em] bg-[#fff7df] px-2 py-1 [font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
-                          style={{ color: challenge.accent }}
-                        >
-                          Up {entry.moveDelta}
-                        </span>
-                      ) : null}
-                    </div>
-                    <p className="mt-1 text-sm font-semibold text-[#5E7392]">
-                      {entry.school}
-                    </p>
-                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold">
-                      <span className="rounded-[0.33em] bg-[#f7fbff] px-2 py-1 text-[#6B7F9B]">
-                        {entry.stage}
-                      </span>
-                      <span className="text-[#7A8DA8]">{entry.updatedAt}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="hidden rounded-[0.33em] bg-[#fbfdff] px-4 py-3 sm:block sm:min-w-28 sm:text-right">
-                  <div>
-                    <p
-                      className="[font-family:var(--font-challenge-ph-mono)] text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
-                      style={{ color: challenge.accent }}
-                    >
-                      {entry.trend}
-                    </p>
+                  <div className="text-right sm:hidden">
                     <p
                       className={cn(
                         "[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]",
+                        isTopThree && "text-3xl",
                         entry.moveDelta !== 0 && "leaderboard-score-live",
                       )}
                     >
                       {entry.score}
                     </p>
+                    <p className="text-xs font-semibold text-[#7A8DA8]">
+                      {entry.updatedAt}
+                    </p>
                   </div>
-                  <p className="mt-1 text-xs font-semibold text-[#7A8DA8]">
+                </div>
+
+                <div className="min-w-0">
+                  <p className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.03em] text-[#081A3A]">
+                    {entry.teamName}
+                  </p>
+                  <p className="mt-1 truncate text-sm font-semibold text-[#5E7392]">
+                    {entry.school}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold sm:block">
+                  <span className="rounded-[0.33em] bg-[#f7fbff] px-2 py-1 text-[#6B7F9B] sm:bg-transparent sm:px-0 sm:py-0">
+                    {entry.stage}
+                  </span>
+                  <span className="text-[#7A8DA8] sm:mt-1 sm:block">
                     {entry.updatedAt}
+                  </span>
+                </div>
+
+                <div
+                  className={cn(
+                    "leaderboard-up-chip [font-family:var(--font-challenge-ph-mono)] text-xs font-semibold uppercase tracking-[0.1em] sm:text-right",
+                    entry.moveDelta === 0 && "text-[#9aabba]",
+                  )}
+                  style={entry.moveDelta !== 0 ? { color: challenge.accent } : undefined}
+                >
+                  {entry.moveDelta > 0
+                    ? `+${entry.moveDelta}`
+                    : entry.moveDelta < 0
+                      ? entry.moveDelta
+                      : "-"}
+                </div>
+
+                <div className="hidden sm:block sm:text-right">
+                  <p
+                    className={cn(
+                      "[font-family:var(--font-challenge-ph-heading)] text-2xl font-black tracking-[-0.04em] text-[#081A3A]",
+                      isTopThree && "text-3xl",
+                      entry.moveDelta !== 0 && "leaderboard-score-live",
+                    )}
+                  >
+                    {entry.score}
                   </p>
                 </div>
               </div>
@@ -952,20 +997,38 @@ function LeaderboardTab({ challenge }: { challenge: ChallengePhChallenge }) {
 
         .leaderboard-row-move {
           position: relative;
-          animation: leaderboard-row-move 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
+          animation: leaderboard-row-move 1200ms cubic-bezier(0.16, 1, 0.3, 1);
           will-change: transform;
         }
 
+        .leaderboard-row-changed {
+          animation:
+            leaderboard-row-move 1200ms cubic-bezier(0.16, 1, 0.3, 1),
+            leaderboard-row-flash 1200ms ease-out;
+        }
+
+        @keyframes leaderboard-row-flash {
+          0% {
+            box-shadow: inset 3px 0 0 ${challenge.accent};
+          }
+          65% {
+            box-shadow: inset 3px 0 0 ${challenge.accent};
+          }
+          100% {
+            box-shadow: inset 0 0 0 transparent;
+          }
+        }
+
         .leaderboard-rank-up {
-          animation: leaderboard-rank-up 520ms ease-out;
+          animation: leaderboard-rank-up 820ms ease-out;
         }
 
         .leaderboard-score-live {
-          animation: leaderboard-score-live 420ms ease-out;
+          animation: leaderboard-score-live 680ms ease-out;
         }
 
         .leaderboard-up-chip {
-          animation: leaderboard-score-live 420ms ease-out;
+          animation: leaderboard-score-live 680ms ease-out;
         }
       `}</style>
     </>
