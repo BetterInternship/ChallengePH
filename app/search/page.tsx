@@ -93,55 +93,57 @@ function ChallengeCard({ challenge }: { challenge: Challenge }) {
     challenge.reward.match(/(PHP[\s\d,]+)/i)?.[1]?.trim() ?? challenge.reward;
 
   return (
-    <Card className="group flex min-h-[20rem] flex-col rounded-[0.33em] border-[#dfe7f2] bg-white/95 p-4 shadow-[0_20px_58px_-50px_rgba(8,26,58,0.55)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_28px_80px_-58px_rgba(8,26,58,0.78)] sm:min-h-[25rem] sm:p-5">
-      <div className="overflow-hidden">
-        <h2 className="[font-family:var(--font-super-listings-heading)] text-[1.35rem] font-black leading-[1.07] tracking-[-0.055em] text-[#081A3A]">
-          {challenge.shortTitle}
-        </h2>
-      </div>
+    <Link
+      href={`/challenges/${challenge.id}`}
+      className="group block focus:outline-none"
+    >
+      <Card className="flex min-h-[20rem] flex-col rounded-[0.33em] border-[#dfe7f2] bg-white/95 p-4 shadow-[0_20px_58px_-50px_rgba(8,26,58,0.55)] transition-[border-color,box-shadow,background-color] duration-300 ease-out group-hover:border-[#8cd3ff] group-hover:bg-white group-hover:shadow-[0_0_46px_8px_rgba(102,194,255,0.82)] group-focus-visible:border-[#8cd3ff] group-focus-visible:bg-white group-focus-visible:shadow-[0_0_46px_8px_rgba(102,194,255,0.82)] sm:min-h-[25rem] sm:p-5">
+        <div className="overflow-hidden">
+          <h2 className="[font-family:var(--font-super-listings-heading)] text-[1.35rem] font-black leading-[1.07] tracking-[-0.055em] text-[#081A3A]">
+            {challenge.shortTitle}
+          </h2>
+        </div>
 
-      <p className="mt-1.5 [font-family:var(--font-super-listings-heading)] font-black leading-snug text-[#0D6BFF]">
-        {amount}
-      </p>
-
-      <p className="mt-3 [font-family:var(--font-super-listings-body)] text-sm font-semibold leading-6 text-[#081A3A]/78">
-        {challenge.summary}
-      </p>
-
-      <div className="mt-4 space-y-2 border-t border-[#dfe7f2] pt-4 [font-family:var(--font-super-listings-body)] text-xs font-bold text-[#28466f]/74">
-        <p className="flex items-center gap-2">
-          <Building2 className="h-4 w-4 shrink-0 text-[#2388ff]" />
-          {challenge.host}
+        <p className="mt-1.5 [font-family:var(--font-super-listings-heading)] font-black leading-snug text-[#0D6BFF]">
+          {amount}
         </p>
-        <p className="flex items-center gap-2">
-          <CalendarDays className="h-4 w-4 shrink-0 text-[#2388ff]" />
-          {challenge.deadline}
-        </p>
-        <p className="flex items-center gap-2">
-          <MapPin className="h-4 w-4 shrink-0 text-[#2388ff]" />
-          {challenge.location}
-        </p>
-      </div>
 
-      <div className="mt-4 flex min-h-[4.5rem] flex-wrap content-start gap-2">
-        {challenge.tags.slice(0, 2).map((tag) => (
-          <span
-            key={tag}
-            className="rounded-[0.33em] bg-[#eef7ff] px-2.5 py-1 [font-family:var(--font-super-listings-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#28466f]"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+        <p className="mt-3 [font-family:var(--font-super-listings-body)] text-sm font-semibold leading-6 text-[#081A3A]/78">
+          {challenge.summary}
+        </p>
 
-      <Link
-        href={`/challenges/${challenge.id}`}
-        className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-[0.33em] border border-[#2388ff] px-4 [font-family:var(--font-super-listings-heading)] text-sm font-bold text-[#2388ff] transition-colors hover:bg-[#2388ff] hover:text-white"
-      >
-        View
-        <ArrowRight className="h-5 w-5" />
-      </Link>
-    </Card>
+        <div className="mt-4 space-y-2 border-t border-[#dfe7f2] pt-4 [font-family:var(--font-super-listings-body)] text-xs font-bold text-[#28466f]/74">
+          <p className="flex items-center gap-2">
+            <Building2 className="h-4 w-4 shrink-0 text-[#2388ff]" />
+            {challenge.host}
+          </p>
+          <p className="flex items-center gap-2">
+            <CalendarDays className="h-4 w-4 shrink-0 text-[#2388ff]" />
+            {challenge.deadline}
+          </p>
+          <p className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 shrink-0 text-[#2388ff]" />
+            {challenge.location}
+          </p>
+        </div>
+
+        <div className="mt-4 flex min-h-[4.5rem] flex-wrap content-start gap-2">
+          {challenge.tags.slice(0, 2).map((tag) => (
+            <span
+              key={tag}
+              className="rounded-[0.33em] bg-[#eef7ff] px-2.5 py-1 [font-family:var(--font-super-listings-mono)] text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#28466f]"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <span className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-[0.33em] border border-[#2388ff] px-4 [font-family:var(--font-super-listings-heading)] text-sm font-bold text-[#2388ff] transition-colors group-hover:bg-[#2388ff] group-hover:text-white">
+          View
+          <ArrowRight className="h-5 w-5" />
+        </span>
+      </Card>
+    </Link>
   );
 }
 
@@ -170,10 +172,7 @@ function ListingsGrid() {
   }, [searchTerm]);
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(to_bottom,#001138_0rem,#001138_8rem,#10284b_16rem,#eef7ff_30rem,#f7fbff_40rem,#ffffff_100%)] px-3 pb-12 pt-4 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(13,107,255,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(13,107,255,0.045)_1px,transparent_1px)] bg-[size:44px_44px] opacity-55 [mask-image:linear-gradient(to_bottom,transparent_0rem,transparent_16rem,#000_28rem)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20rem,rgba(13,107,255,0.1),transparent_18rem),radial-gradient(circle_at_30%_86%,rgba(13,107,255,0.08),transparent_28%)]" />
-
+    <section className="relative overflow-hidden bg-[#001138] px-3 pb-12 pt-4 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
       <div className="relative mx-auto mb-5 max-w-[1120px]">
         <div className="flex items-center gap-3 rounded-[0.33em] border border-[#dbe6f5] bg-white p-2">
           <label className="flex h-10 min-w-0 flex-1 items-center gap-3 rounded-[0.33em] px-3 transition-colors focus-within:bg-white">
