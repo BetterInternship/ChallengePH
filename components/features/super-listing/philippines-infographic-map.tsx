@@ -84,10 +84,10 @@ const LAYOUTS = {
   },
   mobile: {
     width: 390,
-    height: 720,
+    height: 560,
     projectionExtent: [
-      [118, 64],
-      [272, 486],
+      [72, 42],
+      [318, 536],
     ] as [[number, number], [number, number]],
   },
 } as const;
@@ -759,8 +759,8 @@ function PhilippinesMap({
         ? (activeCallout.mobileAnchor ?? activeCallout.resolvedAnchor)
         : activeCallout.resolvedAnchor;
     const cardWidth = layoutName === "mobile" ? 152 : 252;
-    const cardHeight = layoutName === "mobile" ? 104 : 140;
-    const margin = layoutName === "mobile" ? 12 : 18;
+    const cardHeight = layoutName === "mobile" ? 92 : 140;
+    const margin = layoutName === "mobile" ? 10 : 18;
     const gap = layoutName === "mobile" ? 28 : 86;
     const shouldPlaceRight = anchor.x < layout.width / 2;
     const rightX = anchor.x + gap;

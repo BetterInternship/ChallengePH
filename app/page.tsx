@@ -115,9 +115,9 @@ function HeroSection() {
         </div>
         <div
           id="problem-map"
-          className="relative mx-auto block h-screen min-h-[34rem] w-full max-w-none overflow-visible lg:h-auto lg:max-w-[70rem] lg:-translate-y-6 lg:scale-125 xl:scale-[1.42]"
+          className="relative mx-auto block h-[92svh] min-h-[34rem] w-full max-w-none overflow-visible lg:h-auto lg:max-w-[70rem] lg:-translate-y-6 lg:scale-125 xl:scale-[1.42]"
         >
-          <ChallengePhInteractiveMap className="mx-auto flex h-full scale-150 justify-center lg:block lg:h-auto lg:w-full lg:scale-100" />
+          <ChallengePhInteractiveMap className="mx-auto flex h-full -translate-x-8 justify-center lg:block lg:h-auto lg:w-full lg:translate-x-0" />
         </div>
       </div>
     </section>
