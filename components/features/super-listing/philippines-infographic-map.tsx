@@ -773,6 +773,7 @@ function PhilippinesMap({
     const maxX =
       layout.width - cardWidth - (layoutName === "mobile" ? 10 : 18);
     const marginY = layoutName === "mobile" ? 10 : 18;
+    const topSafeY = layoutName === "mobile" ? 22 : 84;
     const gap = layoutName === "mobile" ? 12 : 42;
     const shouldPlaceRight = anchor.x < layout.width / 2;
     const rightX = anchor.x + gap;
@@ -790,10 +791,14 @@ function PhilippinesMap({
       if (canPlaceRight) return rightX;
       return Math.max(minX, Math.min(leftX, maxX));
     })();
+    const preferredY =
+      anchor.y - cardHeight * (layoutName === "mobile" ? 0.52 : 0.76);
+    const belowAnchorY = anchor.y + (layoutName === "mobile" ? 16 : 34);
+    const topWouldClip = preferredY < topSafeY;
     const newY = Math.max(
-      marginY,
+      topSafeY,
       Math.min(
-        anchor.y - cardHeight * (layoutName === "mobile" ? 0.52 : 0.76),
+        topWouldClip ? belowAnchorY : preferredY,
         layout.height - cardHeight - marginY,
       ),
     );
