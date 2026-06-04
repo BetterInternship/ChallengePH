@@ -281,7 +281,7 @@ function getCalloutProvinceKey(
 }
 
 async function loadProvinceFeatures() {
-  const topologies = await Promise.all(
+  const topologyResults = await Promise.allSettled(
     TOPOJSON_FILES.map(async (fileName) => {
       const response = await fetch(`${TOPOJSON_BASE_PATH}/${fileName}`);
 
@@ -291,6 +291,9 @@ async function loadProvinceFeatures() {
 
       return (await response.json()) as Topology;
     }),
+  );
+  const topologies = topologyResults.flatMap((result) =>
+    result.status === "fulfilled" ? [result.value] : [],
   );
 
   return topologies.flatMap((topology) => {
@@ -305,6 +308,24 @@ async function loadProvinceFeatures() {
 
     return collection.features as ProvinceFeature[];
   });
+}
+
+function MapLoadingFallback({ layoutName }: { layoutName: LayoutName }) {
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-[0.65rem] border border-[#8CC8FF]/20 bg-[#061A35]/28",
+        layoutName === "mobile" ? "h-full min-h-[28rem] w-[20rem]" : "aspect-square w-full",
+      )}
+      aria-hidden="true"
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(140,200,255,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(140,200,255,0.08)_1px,transparent_1px)] bg-[size:32px_32px] opacity-45" />
+      <div className="absolute left-1/2 top-1/2 h-56 w-32 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full border border-[#8CC8FF]/30 bg-[#2388ff]/10 shadow-[0_0_42px_rgba(35,136,255,0.22)]" />
+      <div className="absolute left-[54%] top-[26%] h-3 w-3 rounded-full bg-[#2388ff] shadow-[0_0_18px_rgba(35,136,255,0.85)]" />
+      <div className="absolute left-[61%] top-[48%] h-3 w-3 rounded-full bg-[#2388ff] shadow-[0_0_18px_rgba(35,136,255,0.85)]" />
+      <div className="absolute left-[47%] top-[68%] h-3 w-3 rounded-full bg-[#2388ff] shadow-[0_0_18px_rgba(35,136,255,0.85)]" />
+    </div>
+  );
 }
 
 function buildProjectedProvinces(
@@ -1110,7 +1131,16 @@ export function ChallengePhInteractiveMap({
             />
           </div>
         </>
-      ) : null}
+      ) : (
+        <>
+          <div className="flex h-full justify-center md:hidden">
+            <MapLoadingFallback layoutName="mobile" />
+          </div>
+          <div className="hidden md:block">
+            <MapLoadingFallback layoutName="desktop" />
+          </div>
+        </>
+      )}
     </div>
   );
 }
