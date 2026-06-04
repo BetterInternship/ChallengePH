@@ -48,16 +48,6 @@ function HeroSection() {
 
   return (
     <section className="relative isolate flex min-h-screen flex-col overflow-x-hidden bg-[#031226] pb-24 text-white sm:pb-36 lg:overflow-hidden lg:pb-44">
-      <div className="absolute left-4 top-4 z-30 inline-flex transition-opacity duration-200 hover:opacity-75 sm:left-6 sm:top-6">
-        <Image
-          src="/BetterInternshipLogo.png"
-          alt="BetterInternship"
-          width={40}
-          height={40}
-          className="h-10 w-10 sm:h-12 sm:w-12"
-          priority
-        />
-      </div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(140,200,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(140,200,255,0.08)_1px,transparent_1px)] bg-[size:40px_40px] opacity-55 [mask-image:radial-gradient(circle_at_70%_35%,#000_0%,transparent_78%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_28%,rgba(13,107,255,0.24),transparent_30rem)]" />
       <div className="pointer-events-none absolute left-[14%] top-[28%] h-1.5 w-1.5 animate-pulse rounded-full bg-[#66c2ff]/80 shadow-[0_0_12px_rgba(102,194,255,0.65)] [animation-duration:2.8s]" />
@@ -96,7 +86,10 @@ function HeroSection() {
           <div className="mt-8 max-w-sm overflow-hidden rounded-[0.65rem] border border-white/10 bg-[#061A35]/58 backdrop-blur-md whitespace-nowrap sm:mt-10 sm:max-w-xl">
             <div className="grid grid-cols-3 divide-x divide-white/10">
               {socialProofItems.map((item) => (
-                <div key={item.label} className="px-2.5 py-2.5 sm:px-4 sm:py-3.5">
+                <div
+                  key={item.label}
+                  className="px-2.5 py-2.5 sm:px-4 sm:py-3.5"
+                >
                   <p className="[font-family:var(--font-challenge-ph-heading)] text-xl font-bold leading-none tracking-[-0.03em] text-white sm:text-4xl">
                     {item.value}
                   </p>
