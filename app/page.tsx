@@ -47,7 +47,7 @@ function HeroSection() {
   ];
 
   return (
-    <section className="relative isolate flex min-h-screen flex-col overflow-x-hidden bg-[#031226] pb-24 text-white sm:pb-36 lg:overflow-hidden lg:pb-44">
+    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-[#031226] pb-4 text-white sm:pb-36 lg:min-h-screen lg:pb-44">
       <div className="absolute left-4 top-4 z-30 inline-flex transition-opacity duration-200 hover:opacity-75 sm:left-6 sm:top-6">
         <Image
           src="/BetterInternshipLogo.png"
@@ -66,7 +66,7 @@ function HeroSection() {
       <div className="pointer-events-none absolute bottom-[18%] right-[34%] h-1 w-1 animate-pulse rounded-full bg-[#8cd3ff]/70 shadow-[0_0_10px_rgba(140,211,255,0.5)] [animation-delay:1.9s] [animation-duration:3s]" />
       <div className="pointer-events-none absolute left-[72%] top-[68%] h-1.5 w-1.5 animate-pulse rounded-full bg-[#66c2ff]/60 shadow-[0_0_10px_rgba(102,194,255,0.45)] [animation-delay:2.4s] [animation-duration:3.8s]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[#031226]/78 to-[#031226]" />
-      <div className="relative z-10 mx-auto grid w-full max-w-[92rem] flex-1 gap-10 px-4 pt-14 sm:px-6 lg:min-h-screen lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:px-8 lg:pt-8 xl:gap-12">
+      <div className="relative z-10 mx-auto grid w-full max-w-[92rem] flex-1 content-center gap-4 px-4 pb-2 pt-14 sm:gap-10 sm:px-6 lg:min-h-screen lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:content-normal lg:px-8 lg:pb-0 lg:pt-8 xl:gap-12">
         <div className="relative z-20 lg:z-auto lg:pl-8 xl:pl-14">
           <h1 className="mt-6 [font-family:var(--font-challenge-ph-heading)] text-[clamp(2.45rem,4.6vw,4.35rem)] font-bold leading-[0.96] tracking-[-0.04em] whitespace-nowrap">
             <span className="block text-white">
@@ -115,7 +115,7 @@ function HeroSection() {
         </div>
         <div
           id="problem-map"
-          className="relative z-10 mx-auto mt-6 block h-[42rem] w-full max-w-none overflow-visible lg:z-auto lg:mt-0 lg:h-auto lg:max-w-[70rem] lg:-translate-y-6 lg:scale-125 xl:scale-[1.42]"
+          className="relative z-10 mx-auto mt-2 block h-[42svh] max-h-[22rem] min-h-[15rem] w-full max-w-none overflow-visible sm:mt-6 sm:h-[42rem] sm:max-h-none lg:z-auto lg:mt-0 lg:h-auto lg:min-h-0 lg:max-w-[70rem] lg:-translate-y-6 lg:scale-125 xl:scale-[1.42]"
         >
           <ChallengePhInteractiveMap className="mx-auto flex h-full -translate-x-8 justify-center lg:block lg:h-auto lg:w-full lg:translate-x-0" />
         </div>
