@@ -769,9 +769,9 @@ function PhilippinesMap({
         : activeCallout.resolvedAnchor;
     const cardWidth = layoutName === "mobile" ? 152 : 252;
     const cardHeight = layoutName === "mobile" ? 92 : 140;
-    const minX = layoutName === "mobile" ? 10 : 160;
-    const maxX =
-      layout.width - cardWidth - (layoutName === "mobile" ? 10 : 18);
+    const minX = layoutName === "mobile" ? 10 : 132;
+    const rightSafeX = layoutName === "mobile" ? 18 : 138;
+    const maxX = layout.width - cardWidth - rightSafeX;
     const marginY = layoutName === "mobile" ? 10 : 18;
     const topSafeY = layoutName === "mobile" ? 22 : 84;
     const gap = layoutName === "mobile" ? 12 : 42;
