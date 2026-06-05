@@ -166,22 +166,24 @@ export default async function ChallengePage({ params }: PageProps) {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#001138]" />
         <div className="relative mx-auto max-w-6xl">
           <div className="max-w-4xl">
-            {challenge.logo ? (
-              <Image
-                src={challenge.logo}
-                alt={`${challenge.host} logo`}
-                width={104}
-                height={42}
-                className="mb-6 h-auto max-h-8 w-auto object-contain"
-                priority
-              />
-            ) : null}
+            <div className="mb-6 flex items-center gap-3 ">
+              {challenge.logo ? (
+                <Image
+                  src={challenge.logo}
+                  alt={`${challenge.host} logo`}
+                  width={104}
+                  height={42}
+                  className="h-auto max-h-8 w-auto object-contain"
+                  priority
+                />
+              ) : null}
+              <span className="[font-family:var(--font-challenge-ph-heading)] text-lg font-bold text-white/90 -mb-1">
+                Challenge PH
+              </span>
+            </div>
             <h1 className="mt-4 [font-family:var(--font-challenge-ph-heading)] text-[clamp(2.1rem,5.5vw,5rem)] font-black leading-[0.98] tracking-[-0.06em] text-[#FFF7E8]">
               {challenge.title}
             </h1>
-            <p className="mt-5 max-w-3xl text-balance text-base font-semibold leading-7 text-white/90 sm:text-xl sm:leading-8">
-              {challenge.summary}
-            </p>
           </div>
 
           <div className="mt-8 inline-flex flex-col rounded-[0.33em] border border-[#FFF7E8]/22 bg-[#FFF7E8]/10 px-4 py-3 shadow-[0_18px_54px_-44px_rgba(255,247,232,0.55)] backdrop-blur">

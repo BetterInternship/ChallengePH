@@ -231,7 +231,7 @@ function MarkdownSectionContent({ blocks }: { blocks: MarkdownBlock[] }) {
           return (
             <h3
               key={`${block.text}-${index}`}
-              className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.02em] text-[#081A3A]"
+              className="[font-family:var(--font-challenge-ph-heading)] text-xl font-black tracking-[-0.02em] text-[#081A3A]"
             >
               {block.text}
             </h3>

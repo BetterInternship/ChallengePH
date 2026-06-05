@@ -49,17 +49,17 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     id: "browhaus-booking-operations",
     host: "Browhaus",
     sector: "Service operations and customer experience",
-    title: "Beyond the Spreadsheet: Reimagining how Browhaus handles bookings",
+    title: "Reimagining how Browhaus handles bookings",
     shortTitle: "Beyond the Spreadsheet",
     reward: "PHP30,000 prize pool + bring your solution to life",
     rewardType: "Prize pool plus Browhaus pilot opportunity",
-    deadline: "July 18, 2026",
+    deadline: "June 30, 2026",
     location: "Philippines",
     difficulty: "Intermediate",
     summary:
       "Redesign how Browhaus manages bookings behind the scenes so teams can work with more clarity, less friction, and greater care.",
     problem:
-      "Every growing business eventually reaches the same moment: the tools that once helped them move fast begin to hold them back. For Browhaus, that moment is happening in booking operations. Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence.",
+      "As big as it’s gotten over the years, Browhaus still manages its appointments with spreadsheets. While it is familiar and flexible, internal teams are having a harder time improving their speed, accuracy, and confidence.",
     whyItMatters:
       "This challenge asks you to redesign how Browhaus manages bookings behind the scenes. A better system could help staff spend less time searching, updating, and coordinating, and more time serving customers well. ",
     brief: [
@@ -82,10 +82,10 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
       "A clear explanation of who uses the system, how it fits into daily operations, and why it improves the current workflow.",
     ],
     timeline: [
-      { label: "Brief opens", detail: "June 6, 2026" },
-      { label: "Submission deadline", detail: "July 18, 2026" },
-      { label: "Review period", detail: "July 21-25, 2026" },
-      { label: "Winner announcement", detail: "July 30, 2026" },
+      { label: "Brief opens", detail: "June 15, 2026" },
+      { label: "Submission deadline", detail: "June 30, 2026" },
+      { label: "Review period", detail: "July 1-3, 2026" },
+      { label: "Winner announcement", detail: "July 6, 2026" },
     ],
     judgingCriteria: [
       "Operational Impact, 25%: Reduces manual work, improves coordination, and solves real workflow problems.",
@@ -100,17 +100,11 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     logo: "/images/companies/browhaus_logo.png",
     overviewMarkdown: `## The Problem
 
-Every growing business eventually reaches the same moment: the tools that once helped them move fast begin to hold them back.
-
-For Browhaus, that moment is happening in booking operations.
-
-Today, appointments are managed through Google Sheets shared across internal teams. It is familiar and flexible, but as daily booking volume grows, the workflow becomes harder to manage with speed, accuracy, and confidence.
-
+As big as it’s gotten over the years, Browhaus still manages its appointments with spreadsheets.
+While it is familiar and flexible, internal teams are having a harder time improving their speed, accuracy, and confidence.
 ## The Opportunity
 
 This challenge asks **YOU** to redesign how Browhaus manages bookings behind the scenes.
-
-A better system could help staff spend less time searching, updating, and coordinating — and more time serving customers well.
 
 ### Current Workflow
 
@@ -129,23 +123,21 @@ Participants should identify where friction happens and propose a better way for
 
 ### 1. Deployed Website or Prototype
 
-Submit a working link to your proposed booking operations experience.
-
-This can be a deployed website, clickable prototype, no-code build, dashboard mockup, or product flow.
+**Submit a working link to your proposed booking operations experience.** This can be a deployed website, clickable prototype, no-code build, dashboard mockup, or product flow.
 
 Your submission should:
 
-- show the booking operations experience clearly,
-- include a logical flow for staff managing bookings,
-- show how appointments are created, updated, confirmed, rescheduled, or tracked,
-- demonstrate how the solution reduces friction in the current workflow,
-- and be accessible through the link you provide.
+* show the booking operations experience clearly,
+* include a logical flow for staff managing bookings,
+* show how appointments are created, updated, confirmed, rescheduled, or tracked,
+* demonstrate how the solution reduces friction in the current workflow,
+* and be accessible through the link you provide.
 
-It does not need to be fully functional, as long as the experience and logic are clear.
+**It does not need to be fully functional, as long as the experience and logic are clear.**
 
 ### 2. 3-5 Minute Video Pitch
 
-Submit a short video walking through your solution.
+**Submit a short video walking through your solution.**
 
 Your video should:
 
@@ -155,13 +147,11 @@ Your video should:
 * highlight how it improves speed, clarity, accuracy, or customer experience,
 * and explain why it is realistic for Browhaus to pilot.
 
-Upload the video as an unlisted YouTube link.`,
+**Upload the video as an unlisted YouTube link.**`,
     successMetrics: [
-      "Key Result 1: Reduces the number of manual steps needed to create, update, confirm, reschedule, or track a booking.",
-      "Key Result 2: Allows staff to search and filter bookings by customer name, date, status, service, or branch.",
-      "Key Result 3: Clearly shows booking status, including pending, confirmed, rescheduled, cancelled, completed, or no-show.",
-      "Key Result 4: Prevents or flags scheduling conflicts before a booking is confirmed.",
-      "Key Result 5: Includes a clear path for Browhaus to test the solution in a real branch or team workflow.",
+      "Key Result 1: A Browhaus employee can create and confirm a booking in under 30 seconds.",
+      "Key Result 2: A Browhaus employee can update and reschedule a booking in under 20 seconds.",
+      "Key Result 3: A Browhaus employee can navigate the interface to find any booking for any customer in under 10 seconds.",
     ],
     objective:
       "Design a booking operations system that helps Browhaus manage appointments with more speed, clarity, and reliability as the business grows.",
