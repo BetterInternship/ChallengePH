@@ -51,7 +51,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     sector: "Service operations and customer experience",
     title: "Reimagining how Browhaus handles bookings",
     shortTitle: "Beyond the Spreadsheet",
-    reward: "PHP30,000 prize pool + bring your solution to life",
+    reward: "PHP30,000 prize pool + chance to pilot with Browhaus",
     rewardType: "Prize pool plus Browhaus pilot opportunity",
     deadline: "June 30, 2026",
     location: "Philippines",
@@ -100,62 +100,103 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     logo: "/images/companies/browhaus_logo.png",
     overviewMarkdown: `## The Problem
 
-As big as it’s gotten over the years, Browhaus still manages its appointments with spreadsheets.
-While it is familiar and flexible, internal teams are having a harder time improving their speed, accuracy, and confidence.
-## The Opportunity
+Browhaus manages a growing number of customer appointments, but booking operations still rely heavily on spreadsheets.
 
-This challenge asks **YOU** to redesign how Browhaus manages bookings behind the scenes.
-
-### Current Workflow
-
-A typical booking flow may involve:
-
-1. customer inquiry or booking request,
-2. manual appointment encoding,
-3. schedule confirmation,
-4. appointment updates or reschedules,
-5. customer arrival and status tracking,
-6. end-of-day review.
-
-Participants should identify where friction happens and propose a better way for the workflow to operate.
+As bookings grow, staff need a faster way to answer: who is booked today, whether a customer is confirmed, which branch or staff member is involved, what changed after a reschedule, and how to find a booking without searching through rows.
 
 ## Submission Requirements
 
-### 1. Deployed Website or Prototype
+Your submission must include:
 
-**Submit a working link to your proposed booking operations experience.** This can be a deployed website, clickable prototype, no-code build, dashboard mockup, or product flow.
+### 1. 3-5 Minute Video Walkthrough
 
-Your submission should:
+Submit a short video walking through your working demo.
 
-* show the booking operations experience clearly,
-* include a logical flow for staff managing bookings,
-* show how appointments are created, updated, confirmed, rescheduled, or tracked,
-* demonstrate how the solution reduces friction in the current workflow,
-* and be accessible through the link you provide.
+Your video must **explain the booking problem** and highlight how your demo improves Browhaus' current spreadsheet workflow.
 
-**It does not need to be fully functional, as long as the experience and logic are clear.**
+Additionally, your video must show:
 
-### 2. 3-5 Minute Video Pitch
+* Creating a new booking and confirming it
+* Updating or rescheduling an existing booking
+* Searching for and opening a customer booking
+* How the app prevents errors such as missing details, duplicate bookings, or schedule conflicts
+* How booking statuses and change history are displayed
 
-**Submit a short video walking through your solution.**
+### 2. Full-stack working demo
 
-Your video should:
+Submit a working app or website that judges can open and test.
 
-* introduce yourself or your team,
-* explain the booking friction you identified,
-* show how your proposed workflow works,
-* highlight how it improves speed, clarity, accuracy, or customer experience,
-* and explain why it is realistic for Browhaus to pilot.
+Your demo must include:
 
-**Upload the video as an unlisted YouTube link.**`,
+* A frontend
+* A backend
+* Airtable as the database for booking records. **Submissions that do not use Airtable will not be accepted.**
+
+Your demo does not need to be production-ready, but judges must be able to use it to create, confirm, update, reschedule, cancel, and search bookings.
+
+Booking data must be saved in Airtable and persist after page refresh.
+
+## How submissions will be judged
+
+Submissions will be scored out of 100 points.
+
+Judges will test each submission using the same sample booking scenario. The demo does not need to be production-ready, but the workflow must be clear enough for judges to understand and score.
+
+### Before judging starts
+
+These rules apply to every submission.
+
+* Judges will score only what can be tested in the working demo.
+* Features that are only described but not functional in the demo will not receive points.
+* Timing-based items will be tested using the submitted demo.
+* If a task cannot be completed in the demo, it receives 0 points for that item.
+* The demo may use sample data, but the booking workflow must be usable.
+* Submissions must use Airtable as the database. Apps that do not use Airtable will not be accepted.
+
+### Booking speed — 25 points
+
+* Create and confirm a booking in under 30 seconds: 8 pts
+* Update or reschedule a booking in under 20 seconds: 8 pts
+* Search for and open a customer booking in under 10 seconds: 9 pts
+
+### Booking clarity — 20 points
+
+* Captures customer name, contact details, service, assigned staff, date, and time: 7 pts
+* Shows booking status clearly, such as pending, confirmed, cancelled, rescheduled, or no-show: 5 pts
+* Shows a clear daily booking list, queue, or schedule: 5 pts
+* Shows booking changes or reschedule history: 3 pts
+
+### Error reduction — 25 points
+
+* Prevents saving a booking when required details are missing: 7 pts
+* Warns staff about possible duplicate customer bookings: 6 pts
+* Warns staff about assigned staff or time-slot conflicts: 6 pts
+* Makes cancelled, rescheduled, and no-show bookings easy to find: 3 pts
+* Keeps booking status and customer details consistent after edits or reschedules: 3 pts
+
+### Airtable backend implementation — 20 points
+
+* Saves new bookings to Airtable: 7 pts
+* Updates, reschedules, cancels, or changes booking status through Airtable-backed data: 7 pts
+* Booking data persists after page refresh: 6 pts
+
+### Video walkthrough — 10 points
+
+Your video must demonstrate:
+
+* The full booking lifecycle: create, confirm, update, reschedule, cancel, and status check: 3 pts
+* How to search for and find a specific customer booking: 2 pts
+* How the app prevents errors like missing details, duplicate bookings, or schedule conflicts: 3 pts
+* How booking statuses and change history are displayed: 1 pt
+* Is clear and easy to follow within 3-5 minutes: 1 pt`,
     successMetrics: [
       "Key Result 1: A Browhaus employee can create and confirm a booking in under 30 seconds.",
-      "Key Result 2: A Browhaus employee can update and reschedule a booking in under 20 seconds.",
-      "Key Result 3: A Browhaus employee can navigate the interface to find any booking for any customer in under 10 seconds.",
+      "Key Result 2: A Browhaus employee can update or reschedule an existing booking in under 20 seconds.",
+      "Key Result 3: A Browhaus employee can search for and open any customer booking in under 10 seconds.",
     ],
     objective:
-      "Design a booking operations system that helps Browhaus manage appointments with more speed, clarity, and reliability as the business grows.",
-    submissionCalloutTitle: "Ready to reimagine booking operations?",
+      "Design a simple booking operations tool for Browhaus staff. Your solution should make it easier to create, confirm, update, reschedule, and search for customer bookings without relying on messy spreadsheets.",
+    submissionCalloutTitle: "Ready to help Browhaus move beyond spreadsheets?",
   },
   {
     id: "flood-ready-commutes",

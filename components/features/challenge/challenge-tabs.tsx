@@ -33,6 +33,12 @@ type MarkdownBlock =
   | {
       type: "orderedList" | "unorderedList";
       items: string[];
+    }
+  | {
+      type: "table";
+      headers: string[];
+      align: string[];
+      rows: string[][];
     };
 
 type MarkdownSection = {
@@ -214,6 +220,48 @@ function parseOverviewMarkdown(markdown: string): MarkdownSection[] {
       continue;
     }
 
+    if (line.startsWith("|")) {
+      const tableLines = [line];
+
+      while (lines[index + 1]?.trim().startsWith("|")) {
+        index += 1;
+        tableLines.push(lines[index].trim());
+      }
+
+      const headers = tableLines[0]
+        .split("|")
+        .slice(1, -1)
+        .map((cell) => cell.trim());
+
+      const align = tableLines[1]
+        ? tableLines[1]
+            .split("|")
+            .slice(1, -1)
+            .map((cell) =>
+              cell.trim().startsWith(":") && cell.trim().endsWith(":")
+                ? "center"
+                : cell.trim().endsWith(":")
+                  ? "right"
+                  : "left",
+            )
+        : headers.map(() => "left" as const);
+
+      const rows = tableLines.slice(2).map((row) =>
+        row
+          .split("|")
+          .slice(1, -1)
+          .map((cell) => cell.trim()),
+      );
+
+      currentSection.blocks.push({
+        type: "table",
+        headers,
+        align,
+        rows,
+      });
+      continue;
+    }
+
     currentSection.blocks.push({
       type: "paragraph",
       text: line,
@@ -221,6 +269,128 @@ function parseOverviewMarkdown(markdown: string): MarkdownSection[] {
   }
 
   return sections;
+}
+
+function RubricScorecard({ blocks }: { blocks: MarkdownBlock[] }) {
+  const intro: MarkdownBlock[] = [];
+  const groups: { heading: string; note: string; items: string[] }[] = [];
+  let currentGroup: { heading: string; note: string; items: string[] } | null = null;
+
+  for (const block of blocks) {
+    if (block.type === "heading") {
+      currentGroup = { heading: block.text, note: "", items: [] };
+      groups.push(currentGroup);
+    } else if (block.type === "paragraph" && currentGroup) {
+      currentGroup.note += block.text;
+    } else if (block.type === "unorderedList" && currentGroup) {
+      currentGroup.items = block.items;
+    } else if (block.type === "paragraph" && groups.length === 0) {
+      intro.push(block);
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      {intro.length > 0 ? (
+        <MarkdownSectionContent blocks={intro} />
+      ) : null}
+      {groups.map((group) => {
+        const ptsMatch = group.heading.match(/—\s*(up to\s*)?(\d+)\s*points?/);
+        const title = ptsMatch
+          ? group.heading.slice(0, ptsMatch.index).trim()
+          : group.heading;
+        const totalPts = ptsMatch
+          ? `${ptsMatch[1] ?? ""}${ptsMatch[2]} pts`
+          : null;
+
+        if (!ptsMatch) {
+          return (
+            <div
+              key={group.heading}
+              className="rounded-[0.33em] border-l-4 border-[#B77900] bg-[#fff7df] px-4 py-3.5 space-y-2"
+            >
+              <h3 className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.02em] text-[#081A3A]">
+                {group.heading}
+              </h3>
+              {group.note ? (
+                <p className="text-sm leading-5 text-[#5E7392]">
+                  {group.note}
+                </p>
+              ) : null}
+              {group.items.length ? (
+                <ol className="space-y-1.5">
+                  {group.items.map((item, i) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 text-sm leading-5 text-[#28466f]"
+                    >
+                      <span className="shrink-0 [font-family:var(--font-challenge-ph-mono)] text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[#B77900] w-6">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
+            </div>
+          );
+        }
+
+        return (
+          <div
+            key={group.heading}
+            className="rounded-[0.33em] border border-[#dbe6f5] overflow-hidden"
+          >
+            <div className="flex items-center justify-between bg-[#f7fbff] px-4 py-3 border-b border-[#e8eef6]">
+              <span className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.02em] text-[#081A3A]">
+                {title}
+              </span>
+              {totalPts ? (
+                <span className="inline-flex items-center rounded-full bg-[#B77900]/10 px-2.5 py-0.5 [font-family:var(--font-challenge-ph-heading)] text-xs font-black text-[#B77900]">
+                  {totalPts}
+                </span>
+              ) : null}
+            </div>
+            {group.note ? (
+              <p className="px-4 pt-2.5 pb-1 text-xs font-semibold text-[#5E7392]">
+                {group.note}
+              </p>
+            ) : null}
+            <div className="divide-y divide-[#e8eef6]">
+              {group.items.map((item) => {
+                const ptsIdx = item.lastIndexOf(": ");
+                const label = ptsIdx >= 0 ? item.slice(0, ptsIdx) : item;
+                const pts = ptsIdx >= 0 ? item.slice(ptsIdx + 2) : null;
+
+                return (
+                  <div
+                    key={item}
+                    className="flex items-start justify-between gap-4 px-4 py-2.5"
+                  >
+                    <span className="text-sm leading-5 text-[#28466f]">
+                      {label}
+                    </span>
+                    {pts ? (
+                      <span className="shrink-0 [font-family:var(--font-challenge-ph-heading)] text-sm font-black text-[#B77900]">
+                        {pts}
+                      </span>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function isRubricSection(blocks: MarkdownBlock[]): boolean {
+  return blocks.some(
+    (block) =>
+      block.type === "heading" && /—\s*(up to\s*)?\d+\s*points?/i.test(block.text),
+  );
 }
 
 function MarkdownSectionContent({ blocks }: { blocks: MarkdownBlock[] }) {
@@ -273,6 +443,121 @@ function MarkdownSectionContent({ blocks }: { blocks: MarkdownBlock[] }) {
             <p key={`${block.text}-${index}`}>
               <MarkdownText text={block.text} />
             </p>
+          );
+        }
+
+        if (block.type === "table") {
+          const lastHeaderIndex = block.headers.length - 1;
+
+          function EarnsText({ text }: { text: string }) {
+            const match = text.match(/^(.*?)\.?\s*(Earns\s+\d+[\d\-]+\s*pts\.?)?$/);
+            return (
+              <>
+                <MarkdownText text={match?.[1] ?? text} />
+                {match?.[2] ? (
+                  <span className="block text-xs font-semibold text-[#B77900] mt-0.5">
+                    {match[2]}
+                  </span>
+                ) : null}
+              </>
+            );
+          }
+
+          return (
+            <div key={`table-${index}`}>
+              {/* Desktop table */}
+              <div className="hidden sm:block overflow-x-auto">
+                <table className="w-full text-left text-sm border-collapse">
+                  <thead>
+                    <tr className="border-b border-[#dbe6f5] bg-[#f7fbff]">
+                      {block.headers.map((header, cellIndex) => (
+                        <th
+                          key={header}
+                          className="px-3 py-2.5 [font-family:var(--font-challenge-ph-heading)] text-xs font-black uppercase tracking-[0.05em]"
+                          style={{
+                            textAlign: block.align[cellIndex] as "left" | "center" | "right",
+                            color: cellIndex === lastHeaderIndex ? "#B77900" : "#5E7392",
+                          }}
+                        >
+                          {header}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {block.rows.map((row, rowIndex) => {
+                      const ptsIdx = row[0].lastIndexOf(" (");
+                      return (
+                        <tr
+                          key={rowIndex}
+                          className="border-b border-[#e8eef6] last:border-b-0"
+                        >
+                          <td className="px-3 py-2.5 leading-5">
+                            <span className="[font-family:var(--font-challenge-ph-heading)] text-sm font-black tracking-[-0.02em] text-[#081A3A]">
+                              {ptsIdx >= 0 ? row[0].slice(0, ptsIdx) : row[0]}
+                            </span>
+                            {ptsIdx >= 0 ? (
+                              <span className="block text-xs font-semibold text-[#B77900]">
+                                {row[0].slice(ptsIdx + 1, -1)}
+                              </span>
+                            ) : null}
+                          </td>
+                          {row.slice(1).map((cell, cellIndex) => (
+                            <td
+                              key={cellIndex}
+                              className="px-3 py-2.5 leading-5 text-[#28466f]"
+                              style={{
+                                textAlign: block.align[cellIndex + 1] as "left" | "center" | "right",
+                              }}
+                            >
+                              <EarnsText text={cell} />
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {/* Mobile cards */}
+              <div className="space-y-3 sm:hidden">
+                {block.rows.map((row, rowIndex) => {
+                  const ptsIdx = row[0].lastIndexOf(" (");
+                  return (
+                    <div
+                      key={rowIndex}
+                      className="rounded-[0.33em] border border-[#dbe6f5] overflow-hidden"
+                    >
+                      <div className="bg-[#f7fbff] px-4 py-2.5 flex items-center justify-between">
+                        <span className="[font-family:var(--font-challenge-ph-heading)] text-sm font-black tracking-[-0.02em] text-[#081A3A]">
+                          {ptsIdx >= 0 ? row[0].slice(0, ptsIdx) : row[0]}
+                        </span>
+                        {ptsIdx >= 0 ? (
+                          <span className="[font-family:var(--font-challenge-ph-heading)] text-xs font-black tracking-[-0.02em] text-[#B77900]">
+                            {row[0].slice(ptsIdx + 1, -1)}
+                          </span>
+                        ) : null}
+                      </div>
+                      <div className="divide-y divide-[#e8eef6]">
+                        {block.headers.slice(1).map((header, cellIndex) => (
+                          <div key={header} className="px-4 py-3">
+                            <p
+                              className="[font-family:var(--font-challenge-ph-mono)] text-[0.65rem] font-semibold uppercase tracking-[0.1em] mb-1"
+                              style={{ color: cellIndex === lastHeaderIndex - 1 ? "#B77900" : "#5E7392" }}
+                            >
+                              {header}
+                            </p>
+                            <p className="text-sm leading-5 text-[#28466f]">
+                              <EarnsText text={row[cellIndex + 1]} />
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           );
         }
 
@@ -516,7 +801,7 @@ function OverviewTab({
       ) : null}
 
       {challenge.successMetrics?.length ? (
-        <ToggleSection title="Your Objective" withDivider defaultOpen={true}>
+        <ToggleSection title="Your Challenge" withDivider defaultOpen={true}>
           <div className="space-y-4">
             {challenge.objective ? (
               <div>
@@ -551,7 +836,7 @@ function OverviewTab({
             className="inline-flex h-11 items-center justify-center rounded-[0.33em] px-4 [font-family:var(--font-challenge-ph-heading)] text-sm font-bold text-white shadow-[0_18px_46px_-32px_rgba(8,26,58,0.7)] transition-colors"
             style={{ backgroundColor: challenge.accent }}
           >
-            Go to application
+            Start Application
           </button>
         </div>
       </section>
@@ -586,7 +871,11 @@ function ApplicationTab({ challenge }: { challenge: ChallengePhChallenge }) {
               title={section.title}
               withDivider={index > 0}
             >
-              <MarkdownSectionContent blocks={section.blocks} />
+              {isRubricSection(section.blocks) ? (
+                <RubricScorecard blocks={section.blocks} />
+              ) : (
+                <MarkdownSectionContent blocks={section.blocks} />
+              )}
             </ToggleSection>
           ))
         : applicationSections.map((section, index) => (
