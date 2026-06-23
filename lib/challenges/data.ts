@@ -144,14 +144,10 @@ Judges will test each submission using the same sample booking scenario. The dem
 
 ### Before judging starts
 
-These rules apply to every submission.
-
-* Judges will score only what can be tested in the working demo.
-* Features that are only described but not functional in the demo will not receive points.
-* Timing-based items will be tested using the submitted demo.
-* If a task cannot be completed in the demo, it receives 0 points for that item.
-* The demo may use sample data, but the booking workflow must be usable.
-* Submissions must use Airtable as the database. Apps that do not use Airtable will not be accepted.
+* Only working features in the demo are scored — descriptions alone earn 0 pts.
+* Timing benchmarks are tested against the submitted demo.
+* Sample data is fine, but the workflow must be usable.
+* Airtable is required as the database.
 
 ### Booking speed — 25 points
 

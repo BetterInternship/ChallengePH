@@ -271,6 +271,80 @@ function parseOverviewMarkdown(markdown: string): MarkdownSection[] {
   return sections;
 }
 
+function RubricGroup({
+  title,
+  totalPts,
+  note,
+  items,
+}: {
+  title: string;
+  totalPts: string | null;
+  note: string;
+  items: string[];
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="rounded-[0.33em] border border-[#dbe6f5] overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        className="flex w-full items-center justify-between bg-[#f7fbff] px-4 py-3 border-b border-[#e8eef6]"
+        aria-expanded={isOpen}
+      >
+        <span className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.02em] text-[#081A3A]">
+          {title}
+        </span>
+        <div className="flex items-center gap-2">
+          {totalPts ? (
+            <span className="inline-flex items-center rounded-full bg-[#B77900]/10 px-2.5 py-0.5 [font-family:var(--font-challenge-ph-heading)] text-xs font-black text-[#B77900]">
+              {totalPts}
+            </span>
+          ) : null}
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 shrink-0 text-[#5E7392] transition-transform",
+              isOpen && "rotate-180",
+            )}
+          />
+        </div>
+      </button>
+      {isOpen ? (
+        <>
+          {note ? (
+            <p className="px-4 pt-2.5 pb-1 text-xs font-semibold text-[#5E7392]">
+              {note}
+            </p>
+          ) : null}
+          <div className="divide-y divide-[#e8eef6]">
+            {items.map((item) => {
+              const ptsIdx = item.lastIndexOf(": ");
+              const label = ptsIdx >= 0 ? item.slice(0, ptsIdx) : item;
+              const pts = ptsIdx >= 0 ? item.slice(ptsIdx + 2) : null;
+
+              return (
+                <div
+                  key={item}
+                  className="flex items-start justify-between gap-4 px-4 py-2.5"
+                >
+                  <span className="text-sm leading-5 text-[#28466f]">
+                    {label}
+                  </span>
+                  {pts ? (
+                    <span className="shrink-0 [font-family:var(--font-challenge-ph-heading)] text-sm font-black text-[#B77900]">
+                      {pts}
+                    </span>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 function RubricScorecard({ blocks }: { blocks: MarkdownBlock[] }) {
   const intro: MarkdownBlock[] = [];
   const groups: { heading: string; note: string; items: string[] }[] = [];
@@ -337,49 +411,13 @@ function RubricScorecard({ blocks }: { blocks: MarkdownBlock[] }) {
         }
 
         return (
-          <div
+          <RubricGroup
             key={group.heading}
-            className="rounded-[0.33em] border border-[#dbe6f5] overflow-hidden"
-          >
-            <div className="flex items-center justify-between bg-[#f7fbff] px-4 py-3 border-b border-[#e8eef6]">
-              <span className="[font-family:var(--font-challenge-ph-heading)] text-base font-black tracking-[-0.02em] text-[#081A3A]">
-                {title}
-              </span>
-              {totalPts ? (
-                <span className="inline-flex items-center rounded-full bg-[#B77900]/10 px-2.5 py-0.5 [font-family:var(--font-challenge-ph-heading)] text-xs font-black text-[#B77900]">
-                  {totalPts}
-                </span>
-              ) : null}
-            </div>
-            {group.note ? (
-              <p className="px-4 pt-2.5 pb-1 text-xs font-semibold text-[#5E7392]">
-                {group.note}
-              </p>
-            ) : null}
-            <div className="divide-y divide-[#e8eef6]">
-              {group.items.map((item) => {
-                const ptsIdx = item.lastIndexOf(": ");
-                const label = ptsIdx >= 0 ? item.slice(0, ptsIdx) : item;
-                const pts = ptsIdx >= 0 ? item.slice(ptsIdx + 2) : null;
-
-                return (
-                  <div
-                    key={item}
-                    className="flex items-start justify-between gap-4 px-4 py-2.5"
-                  >
-                    <span className="text-sm leading-5 text-[#28466f]">
-                      {label}
-                    </span>
-                    {pts ? (
-                      <span className="shrink-0 [font-family:var(--font-challenge-ph-heading)] text-sm font-black text-[#B77900]">
-                        {pts}
-                      </span>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+            title={title}
+            totalPts={totalPts}
+            note={group.note}
+            items={group.items}
+          />
         );
       })}
     </div>
