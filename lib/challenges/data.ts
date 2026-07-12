@@ -51,7 +51,7 @@ export const challengePhChallenges: ChallengePhChallenge[] = [
     sector: "Service operations and customer experience",
     title: "Reimagining how Browhaus handles bookings",
     shortTitle: "Beyond the Spreadsheet",
-    reward: "PHP30,000 prize pool + chance to pilot with Browhaus",
+    reward: "cash prize + chance to pilot with Browhaus",
     rewardType: "Prize pool plus Browhaus pilot opportunity",
     deadline: "June 30, 2026",
     location: "Philippines",
